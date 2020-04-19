@@ -1,0 +1,57 @@
+package 实验6;
+public class LinkedStack<T> {
+
+    /**栈顶元素 */
+    private Node<T> top = new Node<T>();
+
+    /**
+     * 弹出栈顶元素
+     */
+    public T pop() {
+        //弹出栈顶的元素；
+        T result = top.item;
+        //如果不是栈底，就把栈顶指向下一个元素
+        if(!top.end())
+            top = top.next;
+        return result;
+    }
+    /**
+     * 压入栈
+     */
+     public void push(T item){
+         top = new Node<T>(item, top);
+     }
+
+    /**
+     *Node 
+     */
+     private static class Node<U> {
+         U item;
+         Node<U> next;
+         Node() {item = null; next = null;}
+         Node(U item, Node<U> next){
+             this.item = item;
+             this.next = next;
+         }
+         boolean end() {
+             return item == null && next == null;
+         }
+     }
+
+     public static void main(String args[]) {
+       LinkedStack<String> lss = new LinkedStack<String> ();
+       for(String s : "Sunpro is singing !".split(" "))
+           lss.push(s);
+       String s;
+       while((s = lss.pop()) != null)
+           System.out.println(s);
+       LinkedStack<Integer> lst = new LinkedStack<Integer>();
+       int[] test = {1,2,3,4,5};
+       for(int i : test)
+           lst.push(i);
+       Integer a = 0;
+       while((a = lst.pop()) != null)
+           System.out.println(a);
+    }
+
+}
