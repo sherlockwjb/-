@@ -1,0 +1,254 @@
+#!/bin/bash
+sudo groupadd teacher
+sudo groupadd student 
+echo "请选择功能："
+echo "1.添加用户"
+echo "2.查询用户是否存在"
+echo "3.删除一个用户"
+echo "4.创建默认10个列表"
+echo "5.退出"
+function CheckUsr(){
+	if id -u $ftpname >/dev/null 2>&1; then
+        echo "user exists"
+	echo "Program exit"
+	exit 1
+else
+        echo "user does not exist"
+fi
+} 
+
+
+function del_user(){  
+       	if id $ftpname &>/dev/null;then  
+            sudo userdel  $ftpname 
+            echo "删除$ftpname用户成功"  
+            else  
+                echo "用户$ftpname不存在，不能删除"  
+            fi  
+}
+
+while true 
+do
+read i
+
+case $i in 
+    	1)
+
+		echo "请输入添加用户的名称:"
+		read ftpname
+		CheckUsr $ftpname
+		echo "请输入用户的名称:"
+		read ftpid
+		sudo mkdir -p "/usr/local/ftp/$ftpname/学生作业"
+		sudo mkdir -p "/usr/local/ftp/$ftpname/资源共享"
+		sudo useradd -s /usr/sbin/nologi -g teacher -m -d /usr/local/ftp/$ftpname $ftpid
+		sudo passwd $ftpid <<EOF
+111222
+111222
+EOF
+		sudo useradd -s /usr/sbin/nologi -g student -m -d /usr/local/ftp/$ftpname ${ftpid}s
+		sudo passwd ${ftpid}s <<EOF
+000000
+000000
+EOF
+		cd /usr/local/ftp/$ftpname
+		sudo chmod 777 * #目录权限改成全权限
+
+		
+
+		;;
+
+
+	2)
+
+		echo "请输入查询用户的名称:"
+		read ftpname 
+		CheckUsr $ftpname
+		;;
+	3)
+
+		echo "请输入删除用户的名称:"
+		read ftpname
+		del_user $ftpname
+		;;
+	4)
+
+		sudo mkdir -p /usr/local/ftp/毛焕章/学生作业
+		sudo mkdir -p /usr/local/ftp/毛焕章/资源共享
+		sudo useradd -s /usr/sbin/nologin -g teacher -m -d /usr/local/ftp/毛焕章 maohuanzhang
+		sudo passwd maohuanzhang <<EOF
+111222
+111222
+EOF
+		sudo useradd -s /usr/sbin/nologin -g student -m -d /usr/local/ftp/毛焕章 maohuanzhangs
+		sudo passwd maohuanzhangs <<EOF
+000000
+000000
+EOF
+		cd /usr/local/ftp/毛焕章
+		sudo chmod 777 * #目录权限改成全权限
+
+
+
+
+		sudo mkdir -p /usr/local/ftp/伍华章/学生作业
+		sudo mkdir -p /usr/local/ftp/伍华章/资源共享
+		sudo useradd -s /usr/sbin/nologin -g teacher -m -d /usr/local/ftp/伍华章 wuhuazhang
+		sudo passwd wuhuazhang <<EOF
+111222
+111222
+EOF
+		sudo useradd -s /usr/sbin/nologin -g student -m -d /usr/local/ftp/伍华章 wuhuazhangs
+		sudo passwd wuhuazhangs <<EOF
+000000
+000000
+EOF
+		cd /usr/local/ftp/伍华章
+		sudo chown wuhuazhang:teacher *
+		sudo chmod 777 *
+
+
+
+
+		sudo mkdir -p /usr/local/ftp/吴树荣/学生作业
+		sudo mkdir -p /usr/local/ftp/吴树荣/资源共享
+		sudo useradd -s /usr/sbin/nologin -g teacher -m -d /usr/local/ftp/吴树荣 wushurong
+		sudo passwd wushurong <<EOF
+111222
+111222
+EOF
+		sudo useradd -s /usr/sbin/nologin -g student -m -d /usr/local/ftp/吴树荣 wushurongs
+		sudo passwd wushurongs <<EOF
+000000
+000000
+EOF
+		cd /usr/local/ftp/吴树荣
+		sudo chown wushurong:teacher *
+		sudo chmod 777 *
+
+
+
+
+
+		sudo mkdir -p /usr/local/ftp/肖捷/学生作业
+		sudo mkdir -p /usr/local/ftp/肖捷/资源共享
+		sudo useradd -s /usr/sbin/nologin -g teacher -m -d /usr/local/ftp/肖捷 xiaojie
+		sudo passwd xiaojie <<EOF
+111222
+111222
+EOF
+		sudo useradd -s /usr/sbin/nologin -g student -m -d /usr/local/ftp/肖捷 xiaojies
+		sudo passwd xiaojies <<EOF
+000000
+000000
+EOF
+		cd /usr/local/ftp/肖捷
+		sudo chown xiaojie:teacher *
+		sudo chmod 777 *
+
+
+
+		sudo mkdir -p /usr/local/ftp/熬欣/学生作业
+		sudo mkdir -p /usr/local/ftp/熬欣/资源共享
+		sudo useradd -s /usr/sbin/nologin -g teacher -m -d /usr/local/ftp/熬欣 aoxin
+		sudo passwd aoxin <<EOF
+111222
+111222
+EOF
+		sudo useradd -s /usr/sbin/nologin -g student -m -d /usr/local/ftp/熬欣 aoxins
+		sudo passwd aoxins <<EOF
+000000
+000000
+EOF
+		cd /usr/local/ftp/熬欣
+		sudo chown aoxin:teacher *
+		sudo chmod 777 *
+
+
+
+		sudo mkdir -p /usr/local/ftp/侯爱民/学生作业
+		sudo mkdir -p /usr/local/ftp/侯爱民/资源共享
+		sudo useradd -s /usr/sbin/nologin -g teacher -m -d /usr/local/ftp/侯爱民 houaimin
+		sudo passwd houaimin <<EOF
+111222
+111222
+EOF
+		sudo useradd -s /usr/sbin/nologin -g student -m -d /usr/local/ftp/侯爱民 houaimins
+		sudo passwd houaimins <<EOF
+000000
+000000
+EOF
+		cd /usr/local/ftp/侯爱民
+		sudo chown houaimin:teacher *
+		sudo chmod 777 *
+
+
+
+		sudo mkdir -p /usr/local/ftp/朱君/学生作业
+		sudo mkdir -p /usr/local/ftp/朱君/资源共享
+		sudo useradd -s /usr/sbin/nologin -g teacher -m -d /usr/local/ftp/朱君 zhujun
+		sudo passwd zhujun <<EOF
+111222
+111222
+EOF
+		sudo useradd -s /usr/sbin/nologin -g student -m -d /usr/local/ftp/朱君 zhujuns
+		sudo passwd zhujuns <<EOF
+000000
+000000
+EOF
+		cd /usr/local/ftp/朱君
+		sudo chown zhujun:teacher *
+		sudo chmod 777 *
+
+
+
+		sudo mkdir -p /usr/local/ftp/万利梅/学生作业
+		sudo mkdir -p /usr/local/ftp/万利梅/资源共享
+		sudo useradd -s /usr/sbin/nologin -g teacher -m -d /usr/local/ftp/万利梅 wanglimei
+		sudo passwd wanglimei <<EOF
+111222
+111222
+EOF
+		sudo useradd -s /usr/sbin/nologin -g student -m -d /usr/local/ftp/万利梅 wanglimeis
+		sudo passwd wanglimeis <<EOF
+000000
+000000
+EOF
+		cd /usr/local/ftp/万利梅
+		sudo chown wanglimei:teacher *
+		sudo chmod 777 *
+
+
+
+		sudo mkdir -p /usr/local/ftp/徐建敏/学生作业
+		sudo mkdir -p /usr/local/ftp/徐建敏/资源共享
+		sudo useradd -s /usr/sbin/nologin -g teacher -m -d /usr/local/ftp/徐建敏 xujianmin
+		sudo passwd xujianmin <<EOF
+111222
+111222
+EOF
+		sudo useradd -s /usr/sbin/nologin -g student -m -d /usr/local/ftp/徐建敏 xujianmins
+		sudo passwd xujianmins <<EOF
+000000
+000000
+EOF
+		cd /usr/local/ftp/徐建敏
+		sudo chown xujianmin:teacher *
+		sudo chmod 777 *
+
+		;;
+	5)
+
+		exit 1
+
+		;;
+
+esac
+
+echo "请选择功能："
+echo "1.添加用户"
+echo "2.查询用户是否存在"
+echo "3.删除一个用户"
+echo "4.创建默认10个列表"
+echo "5.退出"
+done
