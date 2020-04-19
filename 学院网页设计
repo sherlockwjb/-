@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>东莞理工学院招新网</title>
+</head>
+  <style>
+    *{
+        padding:0;margin:0;border:0;
+    }
+    .all{
+    	position:absolute;
+        left:-50px;
+        top:0px;
+        width:600px;
+        height:260px;
+        margin:100px auto;
+        position:relative;
+        overflow:hidden;
+    }
+    .all ul{
+        position:relative;
+        z-index:1;
+    }
+    .all ul li{
+        position:absolute;
+        left:0;
+        top:0;
+    }
+    .all ol{
+        position:absolute;
+        z-index:2;
+        right:10px;
+        bottom:10px;
+    }
+    .all ol li{
+        width:20px;
+        height:20px;
+        background:#333;
+        border:1px solid #ccc;
+        font-weight:bold;
+        text-align:center;
+        line-height:20px;
+        float:left;
+        list-style:none;
+        margin-left:10px;
+        color:#ccc;
+        margin-top:10px;
+    }
+    .all ol .current{
+        width:30px;
+        height:30px;
+        line-height:30px;
+        border:1px solid #f60;
+        color:#f60;
+        margin-top:0;
+        cursor:pointer;
+    }
+    
+  </style>
+  <script src="http://libs.baidu.com/jquery/2.0.0/jquery.js"></script>
+  <script>
+    $(function(){
+        var num2=6;
+        $('ol li').mouseover(function(e){
+            $(this).attr('class','current');
+            $(this).siblings().attr('class','');
+            num2++;
+            var num=$(this).index();
+            $('ul li').eq(num).css('z-index',num2);
+            $('ul li').eq(num).css('left','600px');
+            $('ul li').eq(num).animate({left:'0'},50);
+        });
+    });
+  </script>
+<style>
+	#leftAside{
+        position:absolute;
+        top:355px;
+		background-color: #4682B4;
+		height:250px;
+		width:300px;
+	}
+	#header{
+		width:1445px;
+		height:250px;
+	}
+	#rightAside{
+		position:absolute;
+		left:1035px;
+		top:355px;
+		background-color: #4682B4;
+		height:268px;
+		width:400px;
+	}
+	#section1{
+		position:absolute;
+		top:630px;
+		background-color: #4682B4;
+		height:425px;
+		width:1445px;
+	}
+	#section2{
+		position:absolute;
+		top:1065px;
+		background-color: #4682B4;
+		height:70px;
+		width:1445px;
+		text-align: center;
+		line-height: 70px;
+	}
+    a{
+        background-color: :blue;
+   padding: 3px;
+   color: black;
+   display: block;
+   text-decoration:none;
+     }
+     a:hover{
+        color:#eee;
+     }
+  ul{
+   list-style-type: none;
+  }
+  li{
+   float:left;
+   background-color:#4682B4;
+   width: 238px;
+   text-align: center;
+   border:1px solid #eeeeee;
+  }
+#X1 ul li ul{
+    float:none;
+    position:absolute;
+    display:none;
+}
+#X1 ul li ul li{
+    float:none;
+   background-color:none;
+   width: 238px;
+   text-align: center;
+}
+#X1 ul li:hover ul  {
+    background-color: none;
+    display:block;
+}
+
+#X1 ul li:hover ul li a:hover{
+    background-color: orange;
+    display:block;
+}
+</style>
+<body>
+	<image id="header" src="shou.png">
+    <image  src="hui.png" style="position:absolute;left:500px;top:10px;width:500px;height:80px;">
+    <div id="X1" style="text-align: center;">
+    <ul>
+        <li>
+            <a href="">计算机学院</a >
+            <ul>
+                <li><a href="#">软件工程</a></li>
+                <li><a href="#">计科</a></li>
+            </ul>
+        </li>
+  <li><a href="">电智学院</a >
+            <ul>
+                <li><a href="#">电气</a></li>
+                <li><a href="#">通信</a></li>
+            </ul>
+        </li>
+  <li><a href="">机械学院</a >
+            <ul>
+                <li><a href="#">机械</a></li>
+                <li><a href="#">土木</a></li>
+            </ul>
+        </li>
+  <li><a href="">环建学院</a >
+            <ul>
+                <li><a href="#">环境</a></li>
+                <li><a href="#">食品</a></li>
+            </ul>
+        </li>
+  <li><a href="">文学学院</a >
+            <ul>
+                <li><a href="#">汉语言</a></li>
+                <li><a href="#">英语</a></li>
+            </ul>
+        </li>
+  <li><a href="">师范学院</a >
+            <ul>
+                <li><a href="#">音乐</a></li>
+                <li><a href="#">语文</a></li>
+            </ul>
+        </li>
+            </div>
+	<aside id="leftAside">
+    <h4 style="margin-top: 0px;margin-left:20px;padding-top: 10px;text-align: center;color:white"><a href="http://www.dgut.edu.cn/">学校风景</a>
+	<hr style="width:300px;border:1px solid white;margin-left:-20px" /> </h4>
+	<div><img src="1.jpeg" style="width:300px;height:110px;margin-top: 2px;" onclick="window.open('1.jpeg')">
+	</div>
+    <div><img src="2.jpeg" style="width:300px;height:110px;" onclick="window.open('2.jpeg')">
+	</div>
+</aside>
+<aside id="rightAside">
+    <article>
+        <h4 style="margin-left:20px;margin-top: 10px;padding-top: -30px;text-align: center"><a href="http://news.qq.com/">校园新闻</a>
+	<hr style="width:400px;border:1px solid white;margin-left:-20px" /> </h4>
+        <div  style="margin-left:20px;position:absolute;top:50px;">
+            <a href="https://news.qq.com/a/20180708/003588.htm">1.我校隆重举行第18届机器人大赛
+            </a>
+        </div>
+        <div  style="margin-left:20px;position:absolute;top:70px;">
+            <a href="https://new.qq.com/omn/20180708/20180708A01KVM.html">2.吐蕃国国王访问我校
+            </a>
+        </div>
+        <div  style="margin-left:20px;position:absolute;top:90px;">
+            <a href="https://new.qq.com/cmsn/NEW20180/NEW20180708000528.html">3.校运会开幕
+            </a>
+        </div>
+        <div  style="margin-left:20px;position:absolute;top:110px;">
+            <a href="https://new.qq.com/omn/20180708/20180708A056G4.html">4.我校取得两个硕士学位点
+            </a>
+        </div>
+    </article>
+    <div style="margin-left:20px;position:absolute;top:150px;">
+        <img src="haha.png" style="width:200px;height:110px;margin-top: -18px;" onclick="window.open('haha.png')">
+    </div>
+    <div style="position:absolute;top:125px;left:230px">
+    <div style="list-style-type:none;margin-top: -20px;position:absolute;top:50px"><h5>详情咨询招生办：0796-6666221</h5></div>
+    </div>
+</aside>
+<div class="all">
+    <ul>
+        <li><img src="11.jpeg" width="600" height="300"/></li>
+        <li><img src="22.jpeg" width="600" height="300"/></li>
+        <li><img src="33.jpeg" width="600" height="300"/></li>
+        <li><img src="22.jpeg" width="600" height="300"/></li>
+        <li><img src="11.jpeg" width="600" height="300"/></li>
+    </ul>
+    <ol>
+        <li>1</li>
+        <li>2</li>
+        <li>3</li>
+        <li>4</li>
+        <li class="current">5</li>
+    </ol>
+  </div>
+  <div id="section1" >
+  	<article>
+        <div  style="margin-left:20px;position:absolute;top:2px;">
+            <a href="http://sw.dgut.edu.cn/">校园文化表演
+            </a>
+        </div>
+        <div>
+        	<img src="a.jpeg" style="width:200px;height:180px;margin-top: 30px;" onclick="window.open('a.jpeg')">
+		</div>
+    	<div>
+    		<img src="b.jpeg" style="width:200px;height:180px;margin-top: -185px;position:absolute;left: 207px" onclick=	"window.open('b.jpeg')">
+		</div>
+		<div>
+    		<img src="c.jpeg" style="width:200px;height:180px;margin-top: -185px;position:absolute;left: 414px" onclick=	"window.open('c.jpeg')">
+		</div>
+		<div>
+    		<img src="e.jpeg" style="width:200px;height:180px;margin-top: -185px;position:absolute;left: 621px" onclick=	"window.open('e.jpeg')">
+		</div>
+		<div>
+    		<img src="d.jpeg" style="width:200px;height:180px;margin-top: -185px;position:absolute;left: 828px" onclick=	"window.open('d.jpeg')">
+		</div>
+		<div>
+    		<img src="f.jpeg" style="width:200px;height:180px;margin-top: -185px;position:absolute;left: 1035px" onclick=	"window.open('f.jpeg')">
+		</div>
+		<div>
+    		<img src="g.jpg" style="width:200px;height:180px;margin-top: -185px;position:absolute;left: 1242px" onclick=	"window.open('g.jpg')">
+		</div>
+           <div>
+            <img src="h.jpg" style="width:200px;height:180px;margin-top: 30px;" onclick="window.open('h.jpg')">
+        </div>
+        <div>
+            <img src="i.jpg" style="width:200px;height:180px;margin-top: -185px;position:absolute;left: 207px" onclick= "window.open('i.jpg')">
+        </div>
+        <div>
+            <img src="j.jpg" style="width:200px;height:180px;margin-top: -185px;position:absolute;left: 414px" onclick= "window.open('j.jpg')">
+        </div>
+        <div>
+            <img src="k.jpg" style="width:200px;height:180px;margin-top: -185px;position:absolute;left: 621px" onclick= "window.open('k.jpg')">
+        </div>
+        <div>
+            <img src="l.jpg" style="width:200px;height:180px;margin-top: -185px;position:absolute;left: 828px" onclick= "window.open('l.jpg')">
+        </div>
+        <div>
+            <img src="m.jpg" style="width:200px;height:180px;margin-top: -185px;position:absolute;left: 1035px" onclick=    "window.open('m.jpg')">
+        </div>
+        <div>
+            <img src="n.jpg" style="width:200px;height:180px;margin-top: -185px;position:absolute;left: 1242px" onclick=    "window.open('n.jpeg')">
+        </div>
+    </article>
+  </div>
+  <div id="section2" >
+  	杨宇轩 @askdjhsakd 版权所有
+  </div>
+</body>
+</html>
