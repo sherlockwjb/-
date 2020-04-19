@@ -1,0 +1,1796 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <fstream>
+#include <iomanip>
+#include <iterator>
+using namespace std;
+
+using namespace std;
+class Score{
+private:
+    int count;
+    float *scores;
+    string *names;
+    float sum_score;
+    int i;
+    string name;
+public:
+    Score(int count,string *name,float *score){
+        sum_score=0;
+        this->count=count;
+        scores=new float[3];
+        names=new string[3];
+        for(i=0;i<count;i++){
+            Set_name(i,name[i]);
+        }
+        for(i=0;i<count;i++){
+            Set_score(name[i],score[i]);
+            sum_score=sum_score+score[i];
+        }
+    }
+    bool Set_score(string name,float score){
+        int no=-1;
+        if(names[i]==name){
+            scores[i]=score;
+            no=i;
+        }
+        if(no!=i)return false;
+        else
+            return true;
+    }
+    void Set_name(int i,string name){
+        names[i]=name;
+    }
+    void edit_score(string *name,float *score){
+        int i;
+        sum_score=0;
+        for(i=0;i<count;i++){
+            if(names[i]==name[i]){
+                scores[i]=score[i];
+                sum_score=sum_score+score[i];
+            }
+        }
+        
+    }
+    void out_put_score(){
+        int i;
+        for(i=0;i<count;i++){
+            cout<<setw(4)<<names[i];
+        }
+        cout<<setw(4)<<sum_score;
+    }
+    int sum_score_return(){
+        return sum_score;
+    }
+    int sum_score_aaaa(int i){
+        return scores[i];
+    }
+    int score_return(string name){
+        int score=1;
+        for(i=0;i<count;i++){
+            if(names[i]==name){
+                score=scores[i];
+                break;
+            }
+        }
+        return score;
+    }
+    int Query_Fail_Score(string name){
+        int i,no=0;
+        for(i=0;i<count;i++){
+            if(names[i]==name){
+                if(scores[i]<60)
+                    no=1;
+            }
+        }
+        return no;
+    }
+    float* Get_scores_sc(){
+        return scores;
+    }
+    /*   不一定用得到
+     void add_name(string name){
+     count++;
+     string *name1;
+     name1=new string[count];
+     for(i=0;i<count-1;i++){
+     name1[i]=names[i];
+     }
+     name1[count]=name;
+     names=name1;
+     }
+     void add_score(float score){
+     float *score1;
+     score1=new float[count];
+     for(i=0;i<count-1;i++){
+     score1[i]=scores[i];
+     }
+     score1[count]=score;
+     scores=score1;
+     }
+     */
+};
+class Student{
+private:
+    Score Sc;
+public:
+    string name;
+    int classroom;
+    string major;
+    long Num;
+    Student(long Num,string name,string major,int classroom,int count,string *names,float *scores):Sc(count,names,scores)
+    {
+        this->Num=Num;
+        this->name=name;
+        this->major=major;
+        this->classroom=classroom;
+    }
+    void edit_major(string edit_major){
+        major=edit_major;
+    }
+    void edit_classroom(int classroom1){
+        classroom=classroom1;
+    }
+    void out_put_student(){
+        cout<<setw(15)<<Num;
+        cout<<setw(8)<<name;
+        cout<<setw(10)<<major;
+        cout<<setw(2)<<classroom;
+        Sc.out_put_score();
+    }
+    void student_edit(string name,string *names,float *scores){
+        this->name=name;
+        Sc.edit_score(names,scores);
+    }
+    int sum_score_return(){
+        return Sc.sum_score_return();
+    }
+    int score_return(string name){
+        return Sc.score_return(name);
+    }
+    int Query_Fail_Student(string name){
+        int no;
+        no=Sc.Query_Fail_Score(name);
+        return no;
+    }
+    long Get_Num(){
+        return Num;
+    }
+    string Get_Name(){
+        return name;
+    }
+    int Get_Classroom(){
+        return classroom;
+    }
+    string Get_Major(){
+        return major;
+    }
+    float Get_Scores(int i){
+        return Sc.sum_score_aaaa(i);
+    }
+    int Get_Sum_Score(){
+        return Sc.sum_score_return();
+    }
+};
+class Undergraduated_student:public Student{
+private:
+public:
+    int Nianji;
+    int ClassRanking;
+    int SchoolRanking;
+    Undergraduated_student(long Num,string name,string major,int classroom,int count,string *names,
+                           float *scores,int ClassRanking,int SchoolRanking,int Nianji):Student(Num,name,major,classroom,count,names,scores){
+        this->Nianji=Nianji;
+        this->ClassRanking=ClassRanking;
+        this->SchoolRanking=SchoolRanking;
+    }
+    void out_put(){
+        out_put_student();
+        cout<<setw(3)<<ClassRanking<<setw(3)<<SchoolRanking<<setw(5)<<Nianji;
+        cout<<endl;
+    }
+    void Edit(long Num,string name,string major,int classroom,int count,string *names,
+              float *scores,int Nianji){
+        this->Num=Num;
+        this->major=major;
+        this->classroom=classroom;
+        student_edit(name,names,scores);
+    }
+    int Query_Fail_U(string name){
+        int no;
+        no=Query_Fail_Student(name);
+        return no;
+    }
+    int Get_Nianji(){
+        return Nianji;
+    }
+    int Get_ClassRanking(){
+        return ClassRanking;
+    }
+    int Get_SchoolRanking(){
+        return SchoolRanking;
+    }
+};
+class Graduated_student:public Student{
+private:
+public:
+    int Nianji;
+    int ClassRanking;
+    int SchoolRanking;
+    Graduated_student(long Num,string name,string major,int classroom,int count,string *names,
+                      float *scores,int ClassRanking,int SchoolRanking,int Nianji):Student(Num,name,major,classroom,count,names,scores){
+        this->Nianji=Nianji;
+        this->ClassRanking=ClassRanking;
+        this->SchoolRanking=SchoolRanking;
+    }
+    void out_put(){
+        out_put_student();
+        cout<<setw(3)<<ClassRanking<<setw(3)<<SchoolRanking<<setw(5)<<Nianji;
+        cout<<endl;
+    }
+    void Edit(long Num,string name,string major,int classroom,int count,string *names,
+              float *scores,int Nianji){
+        this->Num=Num;
+        this->major=major;
+        this->classroom=classroom;
+        student_edit(name,names,scores);
+    }
+    int Query_Fail_G(string name){
+        int no;
+        no=Query_Fail_Student(name);
+        return no;
+    }
+    int Get_Nianji(){
+        return Nianji;
+    }
+    int Get_ClassRanking(){
+        return ClassRanking;
+    }
+    int Get_SchoolRanking(){
+        return SchoolRanking;
+    }
+};
+template<class T>
+class Iclass{
+private:
+    vector<T> stu;
+    unsigned stu_count;
+    string Insut;//学院
+    int grade;//年级
+    string major;//专业
+    unsigned No;//学号
+public:
+    bool Insert_stu(T stu1){//插入学生是否成功
+        int i,no=-1;
+        if(stu.push_back(stu1))
+        {i=1;no=1;}
+        else i=0;
+        if(no==-1)return false;
+        else
+            return true;
+    }
+    bool Delete_stu(long Num){//删除学生是否成功
+        long long a,b;
+        int i,no=0;
+        typename std::vector<T>::iterator it=stu.begin();
+        a=Num;
+        b=it->Num;
+        for(i=0;i<stu_count;i++){
+            if(a==b){
+                it=stu.erase(i);
+                no=1;}
+            else ++it;
+            b=it->Num;
+        }
+        if(no==-1)return false;
+        else
+            return true;
+    }
+    void Class_sort(int classroom1){//班级学生排名
+        int a,b,c;
+        a=classroom1;
+        int i,j,classranking=0,temp;
+        typename std::vector<T>::iterator first=stu.begin();
+        typename std::vector<T>::iterator second=stu.begin()+1;
+        b=first->classroom;
+        c=second->classroom;
+        for(i=0;i<stu_count;i++){
+            for(j=1;j<stu_count;j++){
+                if(a==c&&a==b){
+                    temp=(*second).sum_score_return();
+                    if((*first).sum_score_return()<temp) classranking++;}
+                ++second;
+                c=second->classroom;
+            }
+            first->ClassRanking=classranking;
+            ++first;
+            b=first->classroom;
+        }
+    }
+    void Class_Score_by_Sum_Score(int classroom1){
+        int a,b,c;
+        int i,j,temp;
+        a=classroom1;
+        typename std::vector<T>::iterator first=stu.begin();
+        typename std::vector<T>::iterator second=stu.begin()+1;
+        b=first->classroom;
+        c=second->classroom;
+        for(i=0;i<stu_count;i++){
+            for(j=1;j<stu_count;j++){
+                if(a==c&&a==b){
+                    temp=(*second).sum_score_return();
+                    if((*first).sum_score_return()<temp) swap(stu[i],stu[j]);}
+                ++second;
+                c=second->classroom;
+            }
+            ++first;
+            b=first->classroom;
+        }
+    }
+    void Sort_by_Num(){
+        int i,j;
+        typename std::vector<T>::iterator first=stu.begin();
+        typename std::vector<T>::iterator second=stu.begin()+1;
+        for(i=0;i<stu_count;i++){
+            for(j=1;j<stu_count;j++){
+                if(first->Num<second->Num){
+                    swap(stu[i],stu[j]);}
+                ++second;
+            }
+            ++first;
+        }
+    }
+    Iclass(vector<T> stu1){
+        int i;
+        stu_count=0;
+        this->stu=stu;
+        for(i=0;i<stu.size();i++)
+            stu_count++;
+        stu=stu1;
+    }
+    void Class_add(T stu1){
+        stu.push_back(stu1);
+    }
+    void Class_edit(int classroom1,int classroom2){
+        typename std::vector<T>::iterator first=stu.begin();
+        while(first!=stu.end()){
+            if(first->classroom==classroom1){
+                (*first).edit_classroom(classroom2);
+            }
+            first++;
+        }
+    }
+    void Class_delete(int classroom1){
+        int a;
+        typename std::vector<T>::iterator first=stu.begin();
+        a=first->classroom;
+        while(first!=stu.end()){
+            if(a==classroom1){
+                first=stu.erase(first);
+            }
+            first++;
+            a=first->classroom;
+        }
+    }
+    void Class_query(int classroom1){
+        int a;
+        typename std::vector<T>::iterator first=stu.begin();
+        a=first->classroom;
+        while(first!=stu.end()){
+            if(first->classroom==classroom1){
+                (*first).out_put();
+            }
+            first++;
+            a=first->classroom;
+        }
+    }
+};
+template<class T>
+class Imajor{
+private:
+    vector<T> stu;
+    unsigned stu_count;
+    int grade;//年级
+    string major;//专业
+    long No;//学号
+public:
+    void Major_sort(string major1){//年级学生排名
+        string a,b,c;
+        int i,j,schoolranking=0;
+        a=major1;
+        typename std::vector<T>::iterator first=stu.begin();
+        typename std::vector<T>::iterator second=stu.begin()+1;
+        b=first->major;
+        c=second->major;
+        for(i=0;i<stu_count;i++){
+            for(j=1;j<stu_count;j++){
+                if(a==b&&a==c){
+                    if((*first).sum_score_return()<(*second).sum_score_return()) schoolranking++;}
+                ++second;
+                c=second->major;
+            }
+            first->SchoolRanking=schoolranking;
+            ++first;
+            b=first->major;
+        }
+    }
+    Imajor(vector<T> stu1){
+        int i;
+        stu_count=0;
+        this->stu=stu;
+        for(i=0;i<stu.size();i++)
+            stu_count++;
+        stu=stu1;
+    }
+    void Major_add(T stu1){
+        stu.push_back(stu1);
+    }
+    void Major_edit(string major1,string major2){
+        typename std::vector<T>::iterator first=stu.begin();
+        while(first!=stu.end()){
+            if(first->major==major1){
+                (*first).edit_major(major2);
+            }
+            first++;
+        }
+    }
+    void Major_delete(string major1){
+        typename std::vector<T>::iterator first=stu.begin();
+        while(first!=stu.end()){
+            if(first->major==major1){
+                first=stu.erase(first);
+            }
+            else first++;
+        }
+    }
+    void Major_query(string major1){
+        typename std::vector<T>::iterator first=stu.begin();
+        while(first!=stu.end()){
+            if(first->major==major1){
+                (*first).out_put();
+            }
+            first++;
+        }
+    }
+};
+class Interface
+{
+protected:
+    vector<Undergraduated_student> stu1;
+    vector<Graduated_student> stu2;
+public:
+    Interface( ){
+        ReadFile( );
+    }
+    void Display( );
+    void Run( );
+    void Function_major(Iclass<Undergraduated_student> &a,Iclass<Graduated_student> &b,Imajor<Undergraduated_student> &aa,Imajor<Graduated_student> &bb,vector<Undergraduated_student>::iterator first1,vector<Graduated_student>::iterator first2);
+    void major_add(Iclass<Undergraduated_student> &a,Iclass<Graduated_student> &b,Imajor<Undergraduated_student> &aa,Imajor<Graduated_student> &bb,vector<Undergraduated_student>::iterator first1,vector<Graduated_student>::iterator first2);
+    void major_add_benke( Iclass<Undergraduated_student> &a,Iclass<Graduated_student> &b,Imajor<Undergraduated_student> &aa,Imajor<Graduated_student> &bb,vector<Undergraduated_student>::iterator first1,vector<Graduated_student>::iterator first2);
+    void major_add_yanjiu( Iclass<Undergraduated_student> &a,Iclass<Graduated_student> &b,Imajor<Undergraduated_student> &aa,Imajor<Graduated_student> &bb,vector<Undergraduated_student>::iterator first1,vector<Graduated_student>::iterator first2);
+    void major_edit(Iclass<Undergraduated_student> &a,Iclass<Graduated_student> &b,Imajor<Undergraduated_student> &aa,Imajor<Graduated_student> &bb,vector<Undergraduated_student>::iterator first1,vector<Graduated_student>::iterator first2);
+    void major_delete(Iclass<Undergraduated_student> &a,Iclass<Graduated_student> &b,Imajor<Undergraduated_student> &aa,Imajor<Graduated_student> &bb,vector<Undergraduated_student>::iterator first1,vector<Graduated_student>::iterator first2);
+    void major_query(Iclass<Undergraduated_student> &a,Iclass<Graduated_student> &b,Imajor<Undergraduated_student> &aa,Imajor<Graduated_student> &bb,vector<Undergraduated_student>::iterator first1,vector<Graduated_student>::iterator first2);
+    void Function_class(Iclass<Undergraduated_student> &a,Iclass<Graduated_student> &b,Imajor<Undergraduated_student> &aa,Imajor<Graduated_student> &bb,vector<Undergraduated_student>::iterator first1,vector<Graduated_student>::iterator first2);
+    void class_add(Iclass<Undergraduated_student> &a,Iclass<Graduated_student> &b,Imajor<Undergraduated_student> &aa,Imajor<Graduated_student> &bb,vector<Undergraduated_student>::iterator first1,vector<Graduated_student>::iterator first2);
+    void class_add_benke(Iclass<Undergraduated_student> &a,Iclass<Graduated_student> &b,Imajor<Undergraduated_student> &aa,Imajor<Graduated_student> &bb,vector<Undergraduated_student>::iterator first1,vector<Graduated_student>::iterator first2);
+    void class_add_yanjiu(Iclass<Undergraduated_student> &a,Iclass<Graduated_student> &b,Imajor<Undergraduated_student> &aa,Imajor<Graduated_student> &bb,vector<Undergraduated_student>::iterator first1,vector<Graduated_student>::iterator first2);
+    void class_edit(Iclass<Undergraduated_student> &a,Iclass<Graduated_student> &b,Imajor<Undergraduated_student> &aa,Imajor<Graduated_student> &bb,vector<Undergraduated_student>::iterator first1,vector<Graduated_student>::iterator first2);
+    void class_delete(Iclass<Undergraduated_student> &a,Iclass<Graduated_student> &b,Imajor<Undergraduated_student> &aa,Imajor<Graduated_student> &bb,vector<Undergraduated_student>::iterator first1,vector<Graduated_student>::iterator first2);
+    void class_query(Iclass<Undergraduated_student> &a,Iclass<Graduated_student> &b,Imajor<Undergraduated_student> &aa,Imajor<Graduated_student> &bb,vector<Undergraduated_student>::iterator first1,vector<Graduated_student>::iterator first2);
+    void Function_add(Iclass<Undergraduated_student> &a,Iclass<Graduated_student> &b,Imajor<Undergraduated_student> &aa,Imajor<Graduated_student> &bb,vector<Undergraduated_student>::iterator first1,vector<Graduated_student>::iterator first2);
+    void add_benke(Iclass<Undergraduated_student> &a,Iclass<Graduated_student> &b,Imajor<Undergraduated_student> &aa,Imajor<Graduated_student> &bb,vector<Undergraduated_student>::iterator first1,vector<Graduated_student>::iterator first2);
+    void add_yanjiu(Iclass<Undergraduated_student> &a,Iclass<Graduated_student> &b,Imajor<Undergraduated_student> &aa,Imajor<Graduated_student> &bb,vector<Undergraduated_student>::iterator first1,vector<Graduated_student>::iterator first2);
+    void Function_edit(Iclass<Undergraduated_student> &a,Iclass<Graduated_student> &b,Imajor<Undergraduated_student> &aa,Imajor<Graduated_student> &bb,vector<Undergraduated_student>::iterator first1,vector<Graduated_student>::iterator first2);
+    void edit_benke(Iclass<Undergraduated_student> &a,Iclass<Graduated_student> &b,Imajor<Undergraduated_student> &aa,Imajor<Graduated_student> &bb,vector<Undergraduated_student>::iterator first1,vector<Graduated_student>::iterator first2);
+    void edit_yanjiu(Iclass<Undergraduated_student> &a,Iclass<Graduated_student> &b,Imajor<Undergraduated_student> &aa,Imajor<Graduated_student> &bb,vector<Undergraduated_student>::iterator first1,vector<Graduated_student>::iterator first2);
+    void Function_delete(Iclass<Undergraduated_student> &a,Iclass<Graduated_student> &b,Imajor<Undergraduated_student> &aa,Imajor<Graduated_student> &bb,vector<Undergraduated_student>::iterator &first1,vector<Graduated_student>::iterator &first2);
+    void delete_benke(Iclass<Undergraduated_student> &a,Iclass<Graduated_student> &b,Imajor<Undergraduated_student> &aa,Imajor<Graduated_student> &bb,vector<Undergraduated_student>::iterator &first1,vector<Graduated_student>::iterator &first2);
+    void delete_yanjiu(Iclass<Undergraduated_student> &a,Iclass<Graduated_student> &b,Imajor<Undergraduated_student> &aa,Imajor<Graduated_student> &bb,vector<Undergraduated_student>::iterator &first1,vector<Graduated_student>::iterator &first2);
+    void Function_Ranking(Iclass<Undergraduated_student> &a,Iclass<Graduated_student> &b,Imajor<Undergraduated_student> &aa,Imajor<Graduated_student> &bb,vector<Undergraduated_student>::iterator first1,vector<Graduated_student>::iterator first2);
+    void Function_Query(Iclass<Undergraduated_student> &a,Iclass<Graduated_student> &b,Imajor<Undergraduated_student> &aa,Imajor<Graduated_student> &bb,vector<Undergraduated_student>::iterator first1,vector<Graduated_student>::iterator first2);
+    void Query_class(Iclass<Undergraduated_student> &a,Iclass<Graduated_student> &b,Imajor<Undergraduated_student> &aa,Imajor<Graduated_student> &bb,vector<Undergraduated_student>::iterator first1,vector<Graduated_student>::iterator first2);
+    void Query_Num_Name(Iclass<Undergraduated_student> &a,Iclass<Graduated_student> &b,Imajor<Undergraduated_student> &aa,Imajor<Graduated_student> &bb,vector<Undergraduated_student>::iterator first1,vector<Graduated_student>::iterator first2);
+    void Query_Fail(Iclass<Undergraduated_student> &a,Iclass<Graduated_student> &b,Imajor<Undergraduated_student> &aa,Imajor<Graduated_student> &bb,vector<Undergraduated_student>::iterator first1,vector<Graduated_student>::iterator first2);
+    void Function_Sort(Iclass<Undergraduated_student> &a,Iclass<Graduated_student> &b,Imajor<Undergraduated_student> &aa,Imajor<Graduated_student> &bb,vector<Undergraduated_student>::iterator first1,vector<Graduated_student>::iterator first2);
+    void Sort_Num(Iclass<Undergraduated_student> &a,Iclass<Graduated_student> &b,Imajor<Undergraduated_student> &aa,Imajor<Graduated_student> &bb,vector<Undergraduated_student>::iterator first1,vector<Graduated_student>::iterator first2);
+    void Sort_Class(Iclass<Undergraduated_student> &a,Iclass<Graduated_student> &b,Imajor<Undergraduated_student> &aa,Imajor<Graduated_student> &bb,vector<Undergraduated_student>::iterator first1,vector<Graduated_student>::iterator first2);
+    void Function_Tongji(Iclass<Undergraduated_student> &a,Iclass<Graduated_student> &b,Imajor<Undergraduated_student> &aa,Imajor<Graduated_student> &bb,vector<Undergraduated_student>::iterator first1,vector<Graduated_student>::iterator first2);
+    void Tongji_Class1(Iclass<Undergraduated_student> &a,Iclass<Graduated_student> &b,Imajor<Undergraduated_student> &aa,Imajor<Graduated_student> &bb,vector<Undergraduated_student>::iterator first1,vector<Graduated_student>::iterator first2);
+    void Tongji_Class2(Iclass<Undergraduated_student> &a,Iclass<Graduated_student> &b,Imajor<Undergraduated_student> &aa,Imajor<Graduated_student> &bb,vector<Undergraduated_student>::iterator first1,vector<Graduated_student>::iterator first2);
+    void Tongji_Name1(Iclass<Undergraduated_student> &a,Iclass<Graduated_student> &b,Imajor<Undergraduated_student> &aa,Imajor<Graduated_student> &bb,vector<Undergraduated_student>::iterator first1,vector<Graduated_student>::iterator first2);
+    void Tongji_Name2(Iclass<Undergraduated_student> &a,Iclass<Graduated_student> &b,Imajor<Undergraduated_student> &aa,Imajor<Graduated_student> &bb,vector<Undergraduated_student>::iterator first1,vector<Graduated_student>::iterator first2);
+    void ReadFile( );
+    void Save(vector<Undergraduated_student>::iterator first1,vector<Graduated_student>::iterator first2 );
+};
+void Interface::ReadFile( ){
+    ifstream in1("student1.txt");
+    if( !in1 ){
+        cout << "Cannot open the file1\n";
+        return ;
+    }
+    ifstream in2("student2.txt");
+    if( !in2 ){
+        cout << "Cannot open the file2\n";
+        return ;
+    }
+    long Num;
+    string name;
+    string major;
+    int classroom;
+    int classranking;
+    int schoolranking;
+    int count1=3;
+    int count2=2;
+    float scores1[3];
+    string names1[3]={"高数","英语","C++"};
+    float scores2[2];
+    string names2[2]={"课程综合","论文"};
+    int Nianji;
+    int i;
+    in1>>Num >> name >> major >> classroom;
+    for(i=0;i<3;i++){
+        in1>> scores1[i];
+    }
+    in1>>classranking;
+    in1>>schoolranking;
+    in1>> Nianji;
+    while( !in1.eof() ){
+        Undergraduated_student ob1(Num,name,major,classroom,count1,names1,scores1,classranking,schoolranking,Nianji);
+        stu1.push_back(ob1);
+        in1>>Num >> name >> major >> classroom;
+        for(i=0;i<3;i++){
+            in1>> scores1[i];
+        }
+        in1>>classranking;
+        in1>>schoolranking;
+        in1>> Nianji;
+    }
+    in1.close();
+    in2>>Num >> name >> major >> classroom;
+    for(i=0;i<2;i++){
+        in2>> scores2[i];
+    }
+    in2>>classranking;
+    in2>>schoolranking;
+    in2>> Nianji;
+    while( !in2.eof() ){
+        Graduated_student ob2(Num,name,major,classroom,count2,names2,scores2,classranking,schoolranking,Nianji);
+        stu2.push_back(ob2);
+        in2>>Num >> name >> major >> classroom;
+        for(i=0;i<2;i++){
+            in2>> scores2[i];
+        }
+        in2>>classranking;
+        in2>>schoolranking;
+        in2>> Nianji;
+    }
+    in2.close();
+    cout<<"学生成绩从文件中录入完毕"<<endl;
+}
+void Interface::Save(vector<Undergraduated_student>::iterator first1,vector<Graduated_student>::iterator first2 ){
+    int i;
+    ofstream out1("Save_student1.txt");
+    if( !out1 ){
+        cout << "Cannot open the file\n";
+        return ;
+    }
+    ofstream out2("Save_student2.txt");
+    if( !out2 ){
+        cout << "Cannot open the file\n";
+        return ;
+    }
+    first1=stu1.begin();
+    first2=stu2.begin();
+    while( first1 != stu1.end() ){
+        out1 << (*first1).Get_Num() << ' ' << (*first1).Get_Name() << ' ' << (*first1).Get_Major() << ' ';
+        out1 << (*first1).Get_Classroom() << ' ' ;
+        for(i=0;i<3;i++){
+            out1<< (*first1).Get_Scores(i) << ' ';
+        }
+        out1 << (*first1).Get_Nianji() << ' ';
+        out1 << (*first1).Get_ClassRanking() << ' ' << (*first1).Get_SchoolRanking()  << endl;
+        first1++;
+    }
+    out1 << endl<<endl;
+    while( first2 != stu2.end() ){
+        out2 << (*first2).Get_Num() << ' ' << (*first2).Get_Name() << ' ' << (*first2).Get_Major() << ' ';
+        out2 << (*first2).Get_Classroom() << ' ' ;
+        for(i=0;i<2;i++){
+            out2<< (*first2).Get_Scores(i) << ' ';
+        }
+        out2 << (*first2).Get_Nianji() << ' ';
+        out2 << (*first2).Get_ClassRanking() << ' ' << (*first2).Get_SchoolRanking()  << endl;
+        first2++;
+    }
+    out2<<endl<<endl;
+    out1.close();
+    out2.close();
+    return;
+}
+void Interface::Display( )
+{
+    cout << endl;
+    cout << "**********学生信息信息管理系统**********" << endl;
+    cout << "*                                  *" << endl;
+    cout << "*            1.专业管理            *" << endl;
+    cout << "*                                  *" << endl;
+    cout << "*            2.班级管理            *" << endl;
+    cout << "*                                  *" << endl;
+    cout << "*            3.添加功能            *" << endl;
+    cout << "*                                  *" << endl;
+    cout << "*            4.修改功能            *" << endl;
+    cout << "*                                  *" << endl;
+    cout << "*            5.删除功能            *" << endl;
+    cout << "*                                  *" << endl;
+    cout << "*            6.排名功能            *" << endl;
+    cout << "*                                  *" << endl;
+    cout << "*            7.查询功能            *" << endl;
+    cout << "*                                  *" << endl;
+    cout << "*            8.排序功能            *" << endl;
+    cout << "*                                  *" << endl;
+    cout << "*            9.统计功能            *" << endl;
+    cout << "*                                  *" << endl;
+    cout << "*            0.退出并保存数据      *" << endl;
+    cout << "************************************" << endl;
+}
+void Interface::Run( )
+{
+    Iclass<Undergraduated_student> a(stu1);
+    Iclass<Graduated_student> b(stu2);
+    Imajor<Undergraduated_student> aa(stu1);
+    Imajor<Graduated_student> bb(stu2);
+    vector<Undergraduated_student>::iterator first1=stu1.begin();
+    vector<Graduated_student>::iterator first2=stu2.begin();
+    int choice;
+    do
+    {
+        Display( );
+        cout << "     Please input your choice: "<<endl;
+        cin >> choice;
+        switch ( choice )
+        {
+            case 0 :
+                cout<<endl;
+                cout<<"已保存学生数据"<<endl;
+                cout<<"感谢使用学生信息管理系统，欢迎下次使用......";
+                cout<<endl<<endl;
+                break;
+            case 1 :    Function_major(a,b,aa,bb,first1,first2);
+                break;
+            case 2 :    Function_class(a,b,aa,bb,first1,first2 );
+                break;
+            case 3 :    Function_add(a,b,aa,bb,first1,first2 );
+                break;
+            case 4 :    Function_edit(a,b,aa,bb,first1,first2 );
+                break;
+            case 5:     Function_delete(a,b,aa,bb,first1,first2 );
+                break;
+            case 6:     Function_Ranking(a,b,aa,bb,first1,first2);
+                break;
+            case 7:     Function_Query(a,b,aa,bb,first1,first2);
+                break;
+            case 8:     Function_Sort(a,b,aa,bb,first1,first2);
+                break;
+            case 9:     Function_Tongji(a,b,aa,bb,first1,first2);
+                break;
+        }
+    }while(choice);
+    Save(first1,first2 );
+}
+void Interface::Function_major(Iclass<Undergraduated_student> &a,Iclass<Graduated_student> &b,Imajor<Undergraduated_student> &aa,Imajor<Graduated_student> &bb,vector<Undergraduated_student>::iterator first1,vector<Graduated_student>::iterator first2){
+    int choice;
+    cout << endl;
+    cout << "***************专业管理**************" << endl;
+    cout << "*                                  *" << endl;
+    cout << "*            1.添加一个专业            *" << endl;
+    cout << "*                                  *" << endl;
+    cout << "*            2.修改专业名称          *" << endl;
+    cout << "*                                  *" << endl;
+    cout << "*            3.删除一个专业         *" << endl;
+    cout << "*                                  *" << endl;
+    cout << "*            4.查询专业学生           *" << endl;
+    cout << "*                                  *" << endl;
+    cout << "*            0.退出         *" << endl;
+    cout << "************************************" << endl;
+    cout << "     Please input your choice: ";
+    cin >> choice;
+    switch ( choice )
+    {
+        case 0 :
+            break;
+        case 1 :    major_add(a,b,aa,bb,first1,first2);
+            break;
+        case 2 :    major_edit(a,b,aa,bb,first1,first2);
+            break;
+        case 3 :    major_delete(a,b,aa,bb,first1,first2);
+            break;
+        case 4 :    major_query(a,b,aa,bb,first1,first2);
+            break;
+    }
+}
+void Interface::major_add(Iclass<Undergraduated_student> &a,Iclass<Graduated_student> &b,Imajor<Undergraduated_student> &aa,Imajor<Graduated_student> &bb,vector<Undergraduated_student>::iterator first1,vector<Graduated_student>::iterator first2)
+{
+    int choice;
+    cout<<"1.添加一个本科生专业   2.添加一个研究生专业"<<endl<<"0.退出"<<endl;
+    cin>>choice;
+    switch(choice){
+        case 0:
+            break;
+        case 1:
+            major_add_benke(a,b,aa,bb,first1,first2 );
+            break;
+        case 2:
+            major_add_yanjiu(a,b,aa,bb,first1,first2);
+            break;
+    }
+}
+void Interface::major_add_benke(Iclass<Undergraduated_student> &a,Iclass<Graduated_student> &b,Imajor<Undergraduated_student> &aa,Imajor<Graduated_student> &bb,vector<Undergraduated_student>::iterator first1,vector<Graduated_student>::iterator first2){
+    long Num,i;
+    string name;
+    string major;
+    int classroom;
+    int count=3;
+    int classranking;
+    int schoolranking;
+    float scores[3]={0,0,0};
+    string names[3]={"数学","英语","C++"};
+    int Nianji;
+    cout<<"请输入要添加的专业名:"<<endl;
+    cin>>major;
+    cout<<"请输入要添加的学生信息:"<<endl<<"学号 姓名 班级 数学成绩 英语成绩 c++成绩 班级排名 年级排名 年级(以各科成绩为-1结束)"<<endl;
+    cin>>Num;
+    cin>> name ;
+    cin>> classroom ;
+    for(i=0;i<3;i++)
+        cin>> scores[i];
+    cin>>classranking;
+    cin>>schoolranking;
+    cin>> Nianji;
+    Undergraduated_student a1(Num,name,major,classroom,count,names,scores,classranking,schoolranking,Nianji);
+    while(scores[0]!=-1&&scores[1]!=-1&&scores[2]!=-1){
+        aa.Major_add(a1);
+        cin>>Num;
+        cin>> name ;
+        cin>> classroom ;
+        for(i=0;i<3;i++)
+            cin>> scores[i];
+		cin>>classranking;
+		cin>>schoolranking;
+        cin>> Nianji;
+        Undergraduated_student a1(Num,name,major,classroom,count,names,scores,classranking,schoolranking,Nianji);
+    }
+	cout<<"添加成功"<<endl;
+}
+void Interface::major_add_yanjiu(Iclass<Undergraduated_student> &a,Iclass<Graduated_student> &b,Imajor<Undergraduated_student> &aa,Imajor<Graduated_student> &bb,vector<Undergraduated_student>::iterator first1,vector<Graduated_student>::iterator first2){
+    long Num,i;
+    string name;
+    string major;
+    int classroom;
+    int count=2;
+    int classranking,schoolranking;
+    float scores[2]={0,0};
+    string names[2]={"课程综合","论文"};
+    int Nianji;
+    cout<<"请输入要添加的专业名:"<<endl;
+    cin>>major;
+    cout<<"请输入要添加的学生信息:"<<endl<<"学号 姓名 班级 课程综合成绩 论文成绩 班级排名 年级排名 年级(以各科成绩为-1结束)"<<endl;
+    cin>>Num;
+    cin>> name ;
+    cin>> classroom ;
+    for(i=0;i<2;i++)
+        cin>> scores[i];
+    cin>>classranking;
+    cin>>schoolranking;
+    cin>> Nianji;
+    Graduated_student a1(Num,name,major,classroom,count,names,scores,classranking,schoolranking,Nianji);
+    while(scores[0]!=-1&&scores[1]!=-1){
+        bb.Major_add(a1);
+        cin>>Num;
+        cin>> name ;
+        cin>> classroom ;
+        for(i=0;i<2;i++)
+            cin>> scores[i];
+		cin>>classranking;
+		cin>>schoolranking;
+        cin>> Nianji;
+        Graduated_student a1(Num,name,major,classroom,count,names,scores,classranking,schoolranking,Nianji);
+    }
+	cout<<"添加成功"<<endl;
+}
+void Interface::major_edit(Iclass<Undergraduated_student> &a,Iclass<Graduated_student> &b,Imajor<Undergraduated_student> &aa,Imajor<Graduated_student> &bb,vector<Undergraduated_student>::iterator first1,vector<Graduated_student>::iterator first2){
+    string major1,major2;
+    int sel;
+    cout<<"请输入要修改的类型:"<<endl;
+    cout<<"1.本科生       2.研究生"<<endl;
+    cin>>sel;
+    cout<<"请输入要修改专业的名称（原）"<<endl;
+    cin>>major1;
+    cout<<"请输入要修改专业的名称（改）"<<endl;
+    cin>>major2;
+    switch(sel){
+        case 1:
+            aa.Major_edit(major1,major2);
+            break;
+        case 2:
+            bb.Major_edit(major1,major2);
+            break;
+    }
+    cout<<"专业修改成功"<<endl;
+}
+void Interface::major_delete(Iclass<Undergraduated_student> &a,Iclass<Graduated_student> &b,Imajor<Undergraduated_student> &aa,Imajor<Graduated_student> &bb,vector<Undergraduated_student>::iterator first1,vector<Graduated_student>::iterator first2){
+    string major1;
+    int sel;
+    cout<<"请输入要删除的类型:"<<endl;
+    cout<<"1.本科生       2.研究生"<<endl;
+    cin>>sel;
+    cout<<"请输入要删除专业的名称"<<endl;
+    cin>>major1;
+    switch(sel){
+        case 1:
+            aa.Major_delete(major1);
+            break;
+        case 2:
+            bb.Major_delete(major1);
+            break;
+    }
+    cout<<"专业删除成功"<<endl;
+}
+void Interface::major_query( Iclass<Undergraduated_student> &a,Iclass<Graduated_student> &b,Imajor<Undergraduated_student> &aa,Imajor<Graduated_student> &bb,vector<Undergraduated_student>::iterator first1,vector<Graduated_student>::iterator first2){
+    string major1;
+    int sel;
+    cout<<"请输入要查询的类型:"<<endl;
+    cout<<"1.本科生       2.研究生"<<endl;
+    cin>>sel;
+    cout<<"请输入要查询专业的名称"<<endl;
+    cin>>major1;
+    switch(sel){
+        case 1:
+            aa.Major_query(major1);
+            break;
+        case 2:
+            bb.Major_query(major1);
+            break;
+    }
+	cout<<endl;
+	cout<<"查询完毕"<<endl;
+}
+void Interface::Function_class(Iclass<Undergraduated_student> &a,Iclass<Graduated_student> &b,Imajor<Undergraduated_student> &aa,Imajor<Graduated_student> &bb,vector<Undergraduated_student>::iterator first1,vector<Graduated_student>::iterator first2){
+    int choice;
+    cout << endl;
+    cout << "***************班级管理**************" << endl;
+    cout << "*                                  *" << endl;
+    cout << "*            1.添加一个班级            *" << endl;
+    cout << "*                                  *" << endl;
+    cout << "*            2.修改班级名称          *" << endl;
+    cout << "*                                  *" << endl;
+    cout << "*            3.删除一个班级         *" << endl;
+    cout << "*                                  *" << endl;
+    cout << "*            4.查询班级学生           *" << endl;
+    cout << "*                                  *" << endl;
+    cout << "*            0.退出                *" << endl;
+    cout << "************************************" << endl;
+    cout << "     Please input your choice: ";
+    cin >> choice;
+    switch ( choice )
+    {
+        case 0 :
+            break;
+        case 1 :    class_add(a,b,aa,bb,first1,first2);
+            break;
+        case 2 :    class_edit(a,b,aa,bb,first1,first2);
+            break;
+        case 3 :    class_delete(a,b,aa,bb,first1,first2);
+            break;
+        case 4 :    class_query(a,b,aa,bb,first1,first2);
+            break;
+    }
+}
+
+void Interface::class_add(Iclass<Undergraduated_student> &a,Iclass<Graduated_student> &b,Imajor<Undergraduated_student> &aa,Imajor<Graduated_student> &bb,vector<Undergraduated_student>::iterator first1,vector<Graduated_student>::iterator first2)
+{
+    int choice;
+    cout<<"1.添加一个本科生班级   2.添加一个研究生班级"<<endl<<"0.退出"<<endl;
+    cin>>choice;
+    switch(choice){
+        case 0:
+            break;
+        case 1:
+            class_add_benke(a,b,aa,bb,first1,first2 );
+            break;
+        case 2:
+            class_add_yanjiu(a,b,aa,bb,first1,first2 );
+            break;
+    }
+	cout<<"添加成功"<<endl;
+}
+void Interface::class_add_benke(Iclass<Undergraduated_student> &a,Iclass<Graduated_student> &b,Imajor<Undergraduated_student> &aa,Imajor<Graduated_student> &bb,vector<Undergraduated_student>::iterator first1,vector<Graduated_student>::iterator first2){
+    long Num,i;
+    string name;
+    string major;
+    int classroom;
+    int count=3;
+    int classranking;
+    int schoolranking;
+    float scores[3]={0,0,0};
+    string names[3]={"数学","英语","C++"};
+    int Nianji;
+    cout<<"请输入要添加的班级号:"<<endl;
+    cin>>classroom;
+    cout<<"请输入要添加的学生信息:"<<endl<<"学号 姓名 班级 数学成绩 英语成绩 c++成绩 班级排名 年级排名 年级(以各科成绩为-1结束)"<<endl;
+    cin>>Num;
+    cin>> name ;
+    cin>> classroom ;
+    for(i=0;i<3;i++)
+        cin>> scores[i];
+    cin>>classranking;
+    cin>>schoolranking;
+    cin>> Nianji;
+    Undergraduated_student a1(Num,name,major,classroom,count,names,scores,classranking,schoolranking,Nianji);
+    while(scores[0]!=-1&&scores[1]!=-1&&scores[2]!=-1){
+        aa.Major_add(a1);
+        cin>>Num;
+        cin>> name ;
+        cin>> classroom ;
+        for(i=0;i<3;i++)
+            cin>> scores[i];
+		cin>>classranking;
+		cin>>schoolranking;
+        cin>> Nianji;
+        Undergraduated_student a1(Num,name,major,classroom,count,names,scores,classranking,schoolranking,Nianji);
+    }
+	cout<<"添加成功"<<endl;
+}
+void Interface::class_add_yanjiu(Iclass<Undergraduated_student> &a,Iclass<Graduated_student> &b,Imajor<Undergraduated_student> &aa,Imajor<Graduated_student> &bb,vector<Undergraduated_student>::iterator first1,vector<Graduated_student>::iterator first2){
+    long Num,i;
+    string name;
+    string major;
+    int classroom;
+    int count=2;
+    int classranking;
+    int schoolranking;
+    float scores[2]={0,0};
+    string names[2]={"课程综合","论文"};
+    int Nianji;
+    cout<<"请输入要添加的班级号:"<<endl;
+    cin>>classroom;
+    cout<<"请输入要添加的学生信息:"<<endl<<"学号 姓名 班级 课程综合成绩 论文成绩 班级排名 年级排名 年级(以各科成绩为-1结束)"<<endl;
+    cin>>Num;
+    cin>> name ;
+    cin>> classroom ;
+    for(i=0;i<2;i++)
+        cin>> scores[i];
+    cin>>classranking;
+    cin>>schoolranking;
+    cin>> Nianji;
+    Graduated_student a1(Num,name,major,classroom,count,names,scores,classranking,schoolranking,Nianji);
+    while(scores[0]!=-1&&scores[1]!=-1){
+        bb.Major_add(a1);
+        cin>>Num;
+        cin>> name ;
+        cin>> classroom ;
+        for(i=0;i<2;i++)
+            cin>> scores[i];
+		cin>>classranking;
+		cin>>schoolranking;
+        cin>> Nianji;
+        Graduated_student a1(Num,name,major,classroom,count,names,scores,classranking,schoolranking,Nianji);
+    }
+	cout<<"添加成功"<<endl;
+}
+void Interface::class_edit(Iclass<Undergraduated_student> &a,Iclass<Graduated_student> &b,Imajor<Undergraduated_student> &aa,Imajor<Graduated_student> &bb,vector<Undergraduated_student>::iterator first1,vector<Graduated_student>::iterator first2){
+    int classroom1,classroom2;
+    int sel;
+    cout<<"请输入要修改的类型:"<<endl;
+    cout<<"1.本科生       2.研究生"<<endl;
+    cin>>sel;
+    cout<<"请输入要修改的班级号（原）"<<endl;
+    cin>>classroom1;
+    cout<<"请输入要修改的班级号（改）"<<endl;
+    cin>>classroom2;
+    switch(sel){
+        case 1:
+            a.Class_edit(classroom1,classroom2);
+            break;
+        case 2:
+            b.Class_edit(classroom1,classroom2);
+            break;
+    }
+	cout<<"修改成功"<<endl;
+}
+void Interface::class_delete(Iclass<Undergraduated_student> &a,Iclass<Graduated_student> &b,Imajor<Undergraduated_student> &aa,Imajor<Graduated_student> &bb,vector<Undergraduated_student>::iterator first1,vector<Graduated_student>::iterator first2){
+    int classroom1;
+    int sel;
+    cout<<"请输入要删除的类型:"<<endl;
+    cout<<"1.本科生       2.研究生"<<endl;
+    cin>>sel;
+    cout<<"请输入要修改的班级号（原）"<<endl;
+    cin>>classroom1;
+    switch(sel){
+        case 1:
+            a.Class_delete(classroom1);
+            break;
+        case 2:
+            b.Class_delete(classroom1);
+            break;
+    }
+	cout<<"删除成功"<<endl;
+}
+void Interface::class_query(Iclass<Undergraduated_student> &a,Iclass<Graduated_student> &b,Imajor<Undergraduated_student> &aa,Imajor<Graduated_student> &bb,vector<Undergraduated_student>::iterator first1,vector<Graduated_student>::iterator first2){
+    int classroom1;
+    int sel;
+    cout<<"请输入要查询的类型:"<<endl;
+    cout<<"1.本科生       2.研究生"<<endl;
+    cin>>sel;
+    cout<<"请输入要查询班级号"<<endl;
+    cin>>classroom1;
+    switch(sel){
+        case 1:
+            a.Class_query(classroom1);
+            break;
+        case 2:
+            b.Class_query(classroom1);
+            break;
+    }
+	cout<<"查询成功"<<endl;
+}
+void Interface::Function_add(Iclass<Undergraduated_student> &a,Iclass<Graduated_student> &b,Imajor<Undergraduated_student> &aa,Imajor<Graduated_student> &bb,vector<Undergraduated_student>::iterator first1,vector<Graduated_student>::iterator first2){
+    int choice;
+    cout<<"1.添加本科生   2.添加研究生"<<endl<<"0.退出"<<endl;
+    cin>>choice;
+    switch(choice){
+        case 0:
+            break;
+        case 1:
+            add_benke(a,b,aa,bb,first1,first2 );
+            break;
+        case 2:
+            add_yanjiu(a,b,aa,bb,first1,first2 );
+            break;
+    }
+	cout<<"添加成功"<<endl;
+}
+void Interface::add_benke(Iclass<Undergraduated_student> &a,Iclass<Graduated_student> &b,Imajor<Undergraduated_student> &aa,Imajor<Graduated_student> &bb,vector<Undergraduated_student>::iterator first1,vector<Graduated_student>::iterator first2){
+    long Num,i;
+    string name;
+    string major;
+    int classroom;
+    int count=3;
+    int classranking;
+    int schoolranking;
+    float scores[3]={0,0,0};
+    string names[3]={"数学","英语","C++"};
+    int Nianji;
+    cout<<"请输入要添加的学生信息:"<<endl<<"学号 姓名 班级 数学成绩 英语成绩 c++成绩 班级排名 年级排名 年级(以各科成绩为-1结束)"<<endl;
+    cin>>Num;
+    cin>> name ;
+    cin>> classroom ;
+    for(i=0;i<3;i++)
+        cin>> scores[i];
+    cin>>classranking;
+    cin>>schoolranking;
+    cin>> Nianji;
+    Undergraduated_student a1(Num,name,major,classroom,count,names,scores,classranking,schoolranking,Nianji);
+    while(scores[0]!=-1&&scores[1]!=-1&&scores[2]!=-1){
+        aa.Major_add(a1);
+        cin>>Num;
+        cin>> name ;
+        cin>> classroom ;
+        for(i=0;i<3;i++)
+            cin>> scores[i];
+		cin>>classranking;
+		cin>>schoolranking;
+        cin>> Nianji;
+        Undergraduated_student a1(Num,name,major,classroom,count,names,scores,classranking,schoolranking,Nianji);
+    }
+}
+void Interface::add_yanjiu(Iclass<Undergraduated_student> &a,Iclass<Graduated_student> &b,Imajor<Undergraduated_student> &aa,Imajor<Graduated_student> &bb,vector<Undergraduated_student>::iterator first1,vector<Graduated_student>::iterator first2){
+    long Num,i;
+    string name;
+    string major;
+    int classroom;
+    int count=2;
+    float scores[2]={0,0};
+    string names[2]={"课程综合","论文"};
+    int Nianji;
+    int classranking;
+    int schoolranking;
+    cout<<"请输入要添加的学生信息:"<<endl<<"学号 姓名 班级 课程综合成绩 论文成绩 班级排名 年级排名 年级(以各科成绩为-1结束)"<<endl;
+    cin>>Num;
+    cin>> name ;
+    cin>> classroom ;
+    for(i=0;i<2;i++)
+        cin>> scores[i];
+    cin>>classranking;
+    cin>>schoolranking;
+    cin>> Nianji;
+    Graduated_student a1(Num,name,major,classroom,count,names,scores,classranking,schoolranking,Nianji);
+    while(scores[0]!=-1&&scores[1]!=-1){
+        bb.Major_add(a1);
+        cin>>Num;
+        cin>> name ;
+        cin>> classroom ;
+        for(i=0;i<2;i++)
+            cin>> scores[i];
+		cin>>classranking;
+		cin>>schoolranking;
+        cin>> Nianji;
+        Graduated_student a1(Num,name,major,classroom,count,names,scores,classranking,schoolranking,Nianji);
+    }
+}
+void Interface::Function_edit(Iclass<Undergraduated_student> &a,Iclass<Graduated_student> &b,Imajor<Undergraduated_student> &aa,Imajor<Graduated_student> &bb,vector<Undergraduated_student>::iterator first1,vector<Graduated_student>::iterator first2){
+    int choice;
+    cout<<"1.修改一个本科生专业   2.修改一个研究生专业"<<endl<<"0.退出"<<endl;
+    cin>>choice;
+    switch(choice){
+        case 0:
+            break;
+        case 1:
+            edit_benke(a,b,aa,bb,first1,first2 );
+            break;
+        case 2:
+            edit_yanjiu(a,b,aa,bb,first1,first2 );
+            break;
+    }
+	cout<<"修改成功"<<endl;
+}
+void Interface::edit_benke(Iclass<Undergraduated_student> &a,Iclass<Graduated_student> &b,Imajor<Undergraduated_student> &aa,Imajor<Graduated_student> &bb,vector<Undergraduated_student>::iterator first1,vector<Graduated_student>::iterator first2){
+    long Num,ax;
+    string name;
+    string major;
+    int classroom,i;
+    int count=3;
+    float scores[3]={0,0,0};
+    string names[3]={"数学","英语","C++"};
+    int Nianji;
+    cout<<"请输入要修改的学号:"<<endl;
+    cin>>Num;
+    first1=stu1.begin();
+    first2=stu2.begin();
+    ax=first1->Num;
+    while(first1!=stu1.end()){
+        if(ax==Num)
+			break;
+		else {
+            first1++;
+            ax=first1->Num;}
+    }
+	system("pause");
+    cout<<"请输入要修改的学生信息:"<<endl<<"姓名 专业 班级 数学成绩 英语成绩 c++成绩 年级"<<endl;
+    cin>> name ;
+	cin>>major;
+    cin>> classroom ;
+    for(i=0;i<3;i++)
+        cin>> scores[i];
+    cin>> Nianji;
+    (*first1).Edit(Num,name,major,classroom,count,names,scores,Nianji);
+}
+void Interface::edit_yanjiu(Iclass<Undergraduated_student> &a,Iclass<Graduated_student> &b,Imajor<Undergraduated_student> &aa,Imajor<Graduated_student> &bb,vector<Undergraduated_student>::iterator first1,vector<Graduated_student>::iterator first2){
+    long Num,ax;
+    string name;
+    string major;
+    int classroom,i;
+    int count=2;
+    float scores[2]={0,0};
+    string names[2]={"课程综合","论文"};
+    int Nianji;
+    cout<<"请输入要修改的学号:"<<endl;
+    cin>>Num;
+    first1=stu1.begin();
+    first2=stu2.begin();
+    ax=first2->Num;
+    while(first2!=stu2.end()){
+        if(ax==Num)
+			break;
+		else{
+            first2++;
+            ax=first2->Num;}
+    }
+    cout<<"请输入要修改的学生信息:"<<endl<<"姓名 专业 班级 课程综合成绩 论文成绩 年级"<<endl;
+    cin>> name ;
+	cin>>major;
+    cin>> classroom ;
+    for(i=0;i<2;i++)
+        cin>> scores[i];
+    cin>> Nianji;
+    (*first2).Edit(Num,name,major,classroom,count,names,scores,Nianji);
+}
+void Interface::Function_delete(Iclass<Undergraduated_student> &a,Iclass<Graduated_student> &b,Imajor<Undergraduated_student> &aa,Imajor<Graduated_student> &bb,vector<Undergraduated_student>::iterator &first1,vector<Graduated_student>::iterator &first2){
+    int choice;
+    cout<<"1.删除一个本科生专业   2.删除一个研究生专业"<<endl<<"0.退出"<<endl;
+    cin>>choice;
+    switch(choice){
+        case 0:
+            break;
+        case 1:
+            delete_benke(a,b,aa,bb,first1,first2 );
+            break;
+        case 2:
+            delete_yanjiu(a,b,aa,bb,first1,first2 );
+            break;
+    }
+	cout<<"删除成功"<<endl;
+}
+void Interface::delete_benke(Iclass<Undergraduated_student> &a,Iclass<Graduated_student> &b,Imajor<Undergraduated_student> &aa,Imajor<Graduated_student> &bb,vector<Undergraduated_student>::iterator &first1,vector<Graduated_student>::iterator &first2){
+    long Num,ax;
+    cout<<"请输入要删除的学号:"<<endl;
+    cin>>Num;
+    first1=stu1.begin();
+    first2=stu2.begin();
+    ax=first1->Num;
+    while(first1!=stu1.end()){
+        if(ax==Num)
+			break;
+		else{
+            first1++;
+            ax=first1->Num;}
+    }
+    if(ax==Num)
+        first1=stu1.erase(first1);
+    else
+        cout<<"查无此生"<<endl;
+}
+void Interface::delete_yanjiu(Iclass<Undergraduated_student> &a,Iclass<Graduated_student> &b,Imajor<Undergraduated_student> &aa,Imajor<Graduated_student> &bb,vector<Undergraduated_student>::iterator &first1,vector<Graduated_student>::iterator &first2){
+    long Num,ax;
+    cout<<"请输入要删除的学号:"<<endl;
+    cin>>Num;
+    first1=stu1.begin();
+    first2=stu2.begin();
+    ax=first2->Num;
+    while(first2!=stu2.end()){
+        if(ax==Num)
+			break;
+		else{
+            first2++;
+            ax=first2->Num;}
+    }
+    if(ax==Num)
+        first2=stu2.erase(first2);
+    else
+        cout<<"查无此生"<<endl;
+}
+void Interface::Function_Ranking(Iclass<Undergraduated_student> &a,Iclass<Graduated_student> &b,Imajor<Undergraduated_student> &aa,Imajor<Graduated_student> &bb,vector<Undergraduated_student>::iterator first1,vector<Graduated_student>::iterator first2){
+    int sel,sel1,sel2;
+    int classroom1,classroom2;
+    string major1,major2;
+    cout<<"1.计算本科生排名     2.计算研究生排名"<<endl;
+    cin>>sel;
+    switch(sel){
+        case 1:
+            cout<<"1.班级排名     2.年级排名"<<endl;
+            cin>>sel1;
+            switch(sel1){
+                case 1:
+                    cout<<"请输入班级号"<<endl;
+                    cin>>classroom1;
+                    a.Class_sort(classroom1);
+                    break;
+                case 2:
+                    cout<<"请输入专业名"<<endl;
+                    cin>>major1;
+                    aa.Major_sort(major1);
+                    break;
+            }
+            break;
+        case 2:
+            cout<<"1.班级排名     2.年级排名"<<endl;
+            cin>>sel2;
+            switch(sel2){
+                case 1:
+                    cout<<"请输入班级号"<<endl;
+                    cin>>classroom2;
+                    b.Class_sort(classroom2);
+                    break;
+                case 2:
+                    cout<<"请输入专业名"<<endl;
+                    cin>>major2;
+                    bb.Major_sort(major2);
+                    break;
+            }
+            break;
+    }
+	cout<<"计算成功"<<endl;
+}
+void Interface::Function_Query(Iclass<Undergraduated_student> &a,Iclass<Graduated_student> &b,Imajor<Undergraduated_student> &aa,Imajor<Graduated_student> &bb,vector<Undergraduated_student>::iterator first1,vector<Graduated_student>::iterator first2){
+    int sel;
+    cout<<endl;
+    cout << "***************查询管理**************" << endl;
+    cout << "*                                  *" << endl;
+    cout << "*            1.按班级显示信息          *" << endl;
+    cout << "*                                  *" << endl;
+    cout << "*            2.按学号或姓名查询        *" << endl;
+    cout << "*                                  *" << endl;
+    cout << "*            3.某科目不及格学生         *" << endl;
+    cout << "*                                  *" << endl;
+    cout << "*            0.退出         *" << endl;
+    cout << "************************************" << endl;
+    cin>>sel;
+    switch(sel){
+        case 0:
+            break;
+        case 1:
+            Query_class(a,b,aa,bb,first1,first2);
+            break;
+        case 2:
+            Query_Num_Name(a,b,aa,bb,first1,first2);
+            break;
+        case 3:
+            Query_Fail(a,b,aa,bb,first1,first2);
+            break;
+    }
+}
+void Interface::Query_class(Iclass<Undergraduated_student> &a,Iclass<Graduated_student> &b,Imajor<Undergraduated_student> &aa,Imajor<Graduated_student> &bb,vector<Undergraduated_student>::iterator first1,vector<Graduated_student>::iterator first2){
+    int sel1;
+    int classroom1,classroom2,B,BB;
+    string major1,major2,A,AA;
+    A=first1->major;
+    B=first1->classroom;
+    AA=first2->major;
+    BB=first2->classroom;
+    cout<<"1.本科生    2.研究生"<<endl;
+    cin>>sel1;
+    first1=stu1.begin();
+    first2=stu2.begin();
+    switch(sel1){
+        case 1:
+            cout<<"请输入专业名  班级号"<<endl;
+            cin>>major1;
+            cin>>classroom1;
+            while(first1!=stu1.end()){
+                if(A==major1){
+                    if(B==classroom1)
+                        (*first1).out_put();
+                }
+                first1++;
+                A=first1->major;
+                B=first1->classroom;
+            }
+			break;
+        case 2:
+            cout<<"请输入专业名  班级号"<<endl;
+            cin>>major2;
+            cin>>classroom2;
+            while(first2!=stu2.end()){
+                if(A==major2){
+                    if(B==classroom2)
+                        (*first2).out_put();
+                }
+                first2++;
+                AA=first2->major;
+                BB=first2->classroom;
+            }
+			break;
+    }
+}
+void Interface::Query_Num_Name(Iclass<Undergraduated_student> &a,Iclass<Graduated_student> &b,Imajor<Undergraduated_student> &aa,Imajor<Graduated_student> &bb,vector<Undergraduated_student>::iterator first1,vector<Graduated_student>::iterator first2){
+    long Num;
+    string name;
+    int sel;
+    int ax=0;
+    first1=stu1.begin();
+    first2=stu2.begin();
+    cout<<"1.按学号查询   2.按姓名查询"<<endl;
+    cin>>sel;
+    switch(sel){
+        case 1:
+            cout<<"请输入学生学号"<<endl;
+            cin>>Num;
+            while(first1!=stu1.end()){
+                if(first1->Num==Num){
+                    ax=1;
+                    (*first1).out_put();
+                    break;}
+                first1++;
+            }
+            if(ax==1){
+                while(first2!=stu2.end()){
+                    if(first2->Num==Num){
+                        (*first2).out_put();
+                        break;
+                    }
+                    first2++;
+                }
+            }
+			break;
+        case 2:
+            cout<<"请输入学生姓名"<<endl;
+            cin>>name;
+            while(first1!=stu1.end()){
+                if(first1->name==name){
+                    ax=1;
+                    (*first1).out_put();
+                    break;}
+                first1++;
+            }
+            if(ax==1){
+                while(first2!=stu2.end()){
+                    if(first2->name==name){
+                        (*first2).out_put();
+                        break;
+                    }
+                    first2++;
+                }
+            }
+			break;
+    }
+}
+void Interface::Query_Fail(Iclass<Undergraduated_student> &a,Iclass<Graduated_student> &b,Imajor<Undergraduated_student> &aa,Imajor<Graduated_student> &bb,vector<Undergraduated_student>::iterator first1,vector<Graduated_student>::iterator first2){
+    int sel1,no1,no2;
+    first1=stu1.begin();
+    first2=stu2.begin();
+    string name1,name2;
+    cout<<"1.本科生    2.研究生"<<endl;
+    cin>>sel1;
+    switch(sel1){
+        case 1:
+            cout<<"请输入科目名"<<endl;
+            cin>>name1;
+            while(first1!=stu1.end()){
+                no1=(*first1).Query_Fail_U(name1);
+                if(no1==1)
+                    (*first1).out_put();
+                first1++;
+            }
+			break;
+        case 2:
+            cout<<"请输入科目名"<<endl;
+            cin>>name2;
+            while(first2!=stu2.end()){
+                no2=(*first2).Query_Fail_G(name2);
+                if(no2==1)
+                    (*first2).out_put();
+                first2++;
+            }
+			break;
+    }
+}
+void Interface::Function_Sort(Iclass<Undergraduated_student> &a,Iclass<Graduated_student> &b,Imajor<Undergraduated_student> &aa,Imajor<Graduated_student> &bb,vector<Undergraduated_student>::iterator first1,vector<Graduated_student>::iterator first2){
+    int sel;
+    cout<<"1.所有学生从学号从低到高排序     2.班级内部按成绩排序"<<endl;
+    cin>>sel;
+    switch(sel){
+        case 1:
+            Sort_Num(a,b,aa,bb,first1,first2);
+            break;
+        case 2:
+            Sort_Class(a,b,aa,bb,first1,first2);
+            break;
+    }
+}
+void Interface::Sort_Num(Iclass<Undergraduated_student> &a,Iclass<Graduated_student> &b,Imajor<Undergraduated_student> &aa,Imajor<Graduated_student> &bb,vector<Undergraduated_student>::iterator first1,vector<Graduated_student>::iterator first2){
+    first1=stu1.begin();
+    first2=stu2.begin();
+    b.Sort_by_Num();
+    a.Sort_by_Num();
+    while(first1!=stu1.end()){
+        (*first1).out_put();
+        first1++;
+    }
+    while(first2!=stu2.end()){
+        (*first2).out_put();
+        first2++;
+    }
+}
+void Interface::Sort_Class(Iclass<Undergraduated_student> &a,Iclass<Graduated_student> &b,Imajor<Undergraduated_student> &aa,Imajor<Graduated_student> &bb,vector<Undergraduated_student>::iterator first1,vector<Graduated_student>::iterator first2){
+    int classroom1,classroom2;
+    int sel;
+    first1=stu1.begin();
+    first2=stu2.begin();
+    cout<<"1.本科生   2.研究生  "<<endl;
+    cin>>sel;
+    switch(sel){
+        case 1:
+            cout<<"输入班级号:"<<endl;
+            cin>>classroom1;
+            a.Class_Score_by_Sum_Score(classroom1);
+            while(first1!=stu1.end()){
+                if(first1->classroom==classroom1)
+                    (*first1).out_put();
+                first1++;
+            }
+			break;
+        case 2:
+            cout<<"输入班级号:"<<endl;
+            cin>>classroom2;
+            b.Class_Score_by_Sum_Score(classroom2);
+            while(first2!=stu2.end()){
+                if(first2->classroom==classroom2)
+                    (*first2).out_put();
+                first2++;
+            }
+			break;
+    }
+}
+void Interface::Function_Tongji(Iclass<Undergraduated_student> &a,Iclass<Graduated_student> &b,Imajor<Undergraduated_student> &aa,Imajor<Graduated_student> &bb,vector<Undergraduated_student>::iterator first1,vector<Graduated_student>::iterator first2){
+    int sel;
+    cout<<endl;
+    cout << "***************统计管理****************************" << endl;
+    cout << "*                                                *" << endl;
+    cout << "*            1.统计某班某科目平均成绩等成绩信息             *" << endl;
+    cout << "*                                                *" << endl;
+    cout << "*            2.统计某班某科目超过平均成绩名单及人数          *" << endl;
+    cout << "*                                                *" << endl;
+    cout << "*            3.统计某班某科目不及格学生名单及人数          *" << endl;
+    cout << "*                                                *" << endl;
+    cout << "*            4.统计某班某科目不同等级人数          *" << endl;
+    cout << "*                                                *" << endl;
+    cout << "*            0.退出                               *" << endl;
+    cout << "**************************************************" << endl;
+    cin>>sel;
+    switch(sel){
+        case 0:
+            break;
+        case 1:
+            Tongji_Class1(a,b,aa,bb,first1,first2);
+            break;
+        case 2:
+            Tongji_Class2(a,b,aa,bb,first1,first2);
+            break;
+        case 3:
+            Tongji_Name1(a,b,aa,bb,first1,first2);
+            break;
+        case 4:
+            Tongji_Name2(a,b,aa,bb,first1,first2);
+            break;
+    }
+}
+void Interface::Tongji_Class1(Iclass<Undergraduated_student> &a,Iclass<Graduated_student> &b,Imajor<Undergraduated_student> &aa,Imajor<Graduated_student> &bb,vector<Undergraduated_student>::iterator first1,vector<Graduated_student>::iterator first2){
+    float classroom1,classroom2,zong1=0,zong2=0,zuigao1=0,zuigao2=0,zuidi1=0,zuidi2=0,zongfen1=0,zongfen2=0;
+    string name1,name2;
+    int sel;
+    first1=stu1.begin();
+    first2=stu2.begin();
+    cout<<"1.本科生   2.研究生  "<<endl;
+    cin>>sel;
+    switch(sel){
+        case 1:
+            cout<<"输入班级号:"<<endl;
+            cin>>classroom1;
+            cout<<"输入科目名称:"<<endl;
+            cin>>name1;
+            while(first1!=stu1.end()){
+                if(first1->classroom==classroom1){
+                    zongfen1=zongfen1+(*first1).score_return(name1);
+                    zong1++;
+                    if(zuigao1>(*first1).score_return(name1))
+                        zuigao1=(*first1).score_return(name1);
+                    if(zuidi1<(*first1).score_return(name1))
+                        zuidi1=(*first1).score_return(name1);
+                }
+                first1++;
+            }
+            cout<<"该班级的平均成绩为:"<<setw(4)<<zongfen1/zong1<<"该班级的最高成绩为:"<<zuigao1<<"  "<<"该班级的最低成绩为:"<<zuidi1<<endl;
+			break;
+		case 2:
+            cout<<"输入班级号:"<<endl;
+            cin>>classroom2;
+            cout<<"输入科目名称:"<<endl;
+            cin>>name2;
+            while(first2!=stu2.end()){
+                if(first2->classroom==classroom2){
+                    zongfen2=zongfen1+(*first1).score_return(name2);
+                    zong2++;
+                    if(zuigao2>(*first2).score_return(name2))
+                        zuigao2=(*first2).score_return(name2);
+                    if(zuidi2<(*first2).score_return(name2))
+                        zuidi2=(*first2).score_return(name2);
+                }
+                first2++;
+            }
+            cout<<"该班级的平均成绩为:"<<setw(4)<<zongfen1/zong1<<"该班级的最高成绩为:"<<zuigao1<<"  "<<"该班级的最低成绩为:"<<zuidi1<<endl;
+			break;
+	}
+}
+void Interface::Tongji_Class2(Iclass<Undergraduated_student> &a,Iclass<Graduated_student> &b,Imajor<Undergraduated_student> &aa,Imajor<Graduated_student> &bb,vector<Undergraduated_student>::iterator first1,vector<Graduated_student>::iterator first2){
+    float classroom1,classroom2,zong1=0,zong2=0,zongfen1=0,zongfen2=0,pingjun1=0,pingjun2=0,chao1=0,chao2=0;
+    string name1,name2;
+    int sel;
+    first1=stu1.begin();
+    first2=stu2.begin();
+    cout<<"1.本科生   2.研究生  "<<endl;
+    cin>>sel;
+    switch(sel){
+        case 1:
+            cout<<"输入班级号:"<<endl;
+            cin>>classroom1;
+            cout<<"输入科目名称:"<<endl;
+            cin>>name1;
+            while(first1!=stu1.end()){
+                if(first1->classroom==classroom1){
+                    zongfen1=zongfen1+(*first1).score_return(name1);
+                    zong1++;
+                }
+                first1++;
+            }
+            first1=stu1.begin();
+            pingjun1=zongfen1/zong1;
+            cout<<"超过平均成绩的人有:"<<endl;
+            while(first1!=stu1.end()){
+                if(first1->classroom==classroom1){
+                    if((*first1).score_return(name1)>pingjun1){
+                        (*first1).out_put();
+                        chao1++;
+                    }
+                }
+                first1++;
+            }
+            cout<<"共"<<chao1<<"个"<<endl;
+			break;
+        case 2:
+            cout<<"输入班级号:"<<endl;
+            cin>>classroom2;
+            cout<<"输入科目名称:"<<endl;
+            cin>>name2;
+            while(first2!=stu2.end()){
+                if(first2->classroom==classroom2){
+                    zongfen2=zongfen2+(*first2).score_return(name1);
+                    zong2++;
+                }
+                first2++;
+            }
+            first2=stu2.begin();
+            pingjun2=zongfen2/zong2;
+            cout<<"超过平均成绩的人有:"<<endl;
+            while(first2!=stu2.end()){
+                if(first2->classroom==classroom2){
+                    if((*first2).score_return(name2)>pingjun2){
+                        (*first2).out_put();
+                        chao2++;
+                    }
+                }
+                first2++;
+            }
+            cout<<"共"<<chao1<<"个"<<endl;
+			break;
+    }
+}
+void Interface::Tongji_Name1(Iclass<Undergraduated_student> &a,Iclass<Graduated_student> &b,Imajor<Undergraduated_student> &aa,Imajor<Graduated_student> &bb,vector<Undergraduated_student>::iterator first1,vector<Graduated_student>::iterator first2){
+    float classroom1,classroom2,bujige1=0,bujige2=0;
+    string name1,name2;
+    int sel;
+    first1=stu1.begin();
+    first2=stu2.begin();
+    cout<<"1.本科生   2.研究生  "<<endl;
+    cin>>sel;
+    switch(sel){
+        case 1:
+            cout<<"输入班级号:"<<endl;
+            cin>>classroom1;
+            cout<<"输入科目名称:"<<endl;
+            cin>>name1;
+            cout<<"不及格的人有:"<<endl;
+            while(first1!=stu1.end()){
+                if(first1->classroom==classroom1){
+                    if((*first1).score_return(name1)<60){
+                        (*first1).out_put();
+                        bujige1++;
+                    }
+                }
+                first1++;
+            }
+            cout<<"共"<<bujige1<<"个"<<endl;
+			break;
+        case 2:
+            cout<<"输入班级号:"<<endl;
+            cin>>classroom2;
+            cout<<"输入科目名称:"<<endl;
+            cin>>name2;
+            cout<<"不及格的人有:"<<endl;
+            while(first2!=stu2.end()){
+                if(first2->classroom==classroom2){
+                    if((*first2).score_return(name2)<60){
+                        (*first2).out_put();
+                        bujige2++;
+                    }
+                }
+                first2++;
+            }
+            cout<<"共"<<bujige2<<"个"<<endl;
+			break;
+    }
+}
+void Interface::Tongji_Name2(Iclass<Undergraduated_student> &a,Iclass<Graduated_student> &b,Imajor<Undergraduated_student> &aa,Imajor<Graduated_student> &bb,vector<Undergraduated_student>::iterator first1,vector<Graduated_student>::iterator first2){
+    float classroom1,classroom2,A=0,B=0,C=0,D=0,E=0;
+    string name1,name2;
+    int sel;
+    first1=stu1.begin();
+    first2=stu2.begin();
+    cout<<"1.本科生   2.研究生  "<<endl;
+    cin>>sel;
+    switch(sel){
+        case 1:
+            cout<<"输入班级号:"<<endl;
+            cin>>classroom1;
+            cout<<"输入科目名称:"<<endl;
+            cin>>name1;
+            cout<<"不及格的人有:"<<endl;
+            while(first1!=stu1.end()){
+                if(first1->classroom==classroom1){
+                    if((*first1).score_return(name1)<60){
+                        E++;
+                    }
+                    else if((*first1).score_return(name1)>=60&&(*first1).score_return(name1)<70){
+                        D++;
+                    }
+                    else if((*first1).score_return(name1)>=70&&(*first1).score_return(name1)<80){
+                        C++;
+                    }
+                    else if((*first1).score_return(name1)>=80&&(*first1).score_return(name1)<90){
+                        B++;
+                    }
+                    else if((*first1).score_return(name1)>=90&&(*first1).score_return(name1)<=100){
+                        A++;
+                    }
+                }
+                first1++;
+            }
+            cout<<"优秀："<<A<<"个"<<endl;
+            cout<<"良好："<<B<<"个"<<endl;
+            cout<<"中等："<<C<<"个"<<endl;
+            cout<<"及格："<<D<<"个"<<endl;
+            cout<<"不及格："<<E<<"个"<<endl;
+			break;
+        case 2:
+            A=0;B=0;C=0;D=0;E=0;
+            cout<<"输入班级号:"<<endl;
+            cin>>classroom2;
+            cout<<"输入科目名称:"<<endl;
+            cin>>name2;
+            cout<<"不及格的人有:"<<endl;
+            while(first2!=stu2.end()){
+                if(first2->classroom==classroom2){
+                    if((*first2).score_return(name2)<60){
+                        E++;
+                    }
+                    else if((*first2).score_return(name2)>=60&&(*first2).score_return(name2)<70){
+                        D++;
+                    }
+                    else if((*first2).score_return(name2)>=70&&(*first2).score_return(name2)<80){
+                        C++;
+                    }
+                    else if((*first2).score_return(name2)>=80&&(*first2).score_return(name2)<90){
+                        B++;
+                    }
+                    else if((*first2).score_return(name2)>=90&&(*first2).score_return(name2)<=100){
+                        A++;
+                    }
+                }
+                first2++;
+            }
+            cout<<"优秀："<<A<<"个"<<endl;
+            cout<<"良好："<<B<<"个"<<endl;
+            cout<<"中等："<<C<<"个"<<endl;
+            cout<<"及格："<<D<<"个"<<endl;
+            cout<<"不及格："<<E<<"个"<<endl;
+			break;
+    }
+}
+int main() {
+    Interface inter;
+    inter.Run( );
+    return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
