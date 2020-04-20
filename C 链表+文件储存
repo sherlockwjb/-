@@ -1,0 +1,497 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+struct Stulink {
+	int xh, cj, mc;
+	char xm[20], dj[5];
+	struct Stulink *next;
+};
+struct Stulink *Query_Node(struct Stulink *head);
+struct Stulink *Edit_Node(struct Stulink *head);
+struct Stulink *Delete_Node(struct Stulink *head);
+struct Stulink *Edit_Node(struct Stulink *head);
+struct Stulink *Rank_Link(struct Stulink *head);
+struct Stulink *Rank_xh_down(struct Stulink *head);
+struct Stulink *ReadFromFile(FILE *fp,struct Stulink *head);
+struct Stulink *Add_many(struct Stulink *head);
+void SaveToFile(struct Stulink *head);
+void chuangjian();
+struct Stulink *Rank_cj_up(struct Stulink *head);
+struct Stulink *Analysis_Link(struct Stulink *head);
+struct Stulink *Sort_Link_up(struct Stulink *head);
+struct Stulink *Output_Link(struct Stulink *head);
+struct Stulink *Insert_Node(struct Stulink *head);
+struct Stulink *p1, *p2;
+struct Stulink *head;
+struct Stulink *weihu(struct Stulink *head);
+struct Stulink *paixu(struct Stulink *head);
+struct Stulink *shuchu(struct Stulink *head);
+int size = sizeof(struct Stulink);
+void *Stulink;
+int x;
+FILE *fp;
+int xh, cj, mc;
+char xm[20], dj[5];
+int main()
+{
+	int sel;
+	head = ReadFromFile(fp,head);
+	while (1) {
+		printf("              学生管理系统\n");
+		printf("========================================\n");
+		printf("1-批量添加          2-链表维护\n");
+		printf("3-计算排序          4-统计分析\n");
+		printf("5-报表输出          0-退出\n");
+		printf("========================================\n");
+		printf("请选择功能:\n");
+		scanf("%d", &sel);
+		switch (sel) {
+		case 1:
+			head = Add_many(head);
+			break;
+		case 2:
+			head = weihu(head);
+			break;
+		case 3:
+			head = paixu(head);
+			break;
+		case 4:
+			head = Analysis_Link(head);
+			printf("请按任意键继续....\n");
+			getchar();
+			break;
+		case 5:
+			head = shuchu(head);
+			break;
+		case 0:
+			SaveToFile(head);
+			exit(0);
+		default:
+			printf("输入错误，请重新输入\n");
+			break;
+		}
+	}
+}
+struct Stulink *weihu(struct Stulink *head)
+{
+	int sel;
+	printf("           二级菜单---链表维护与管理\n");
+	printf("=============================================\n");
+	printf("1-插入一个学生成绩       2-修改一个学生成绩\n");
+	printf("3-删除一个学生成绩       4-查询一个学生信息\n");
+	printf("0-退出上级菜单\n");
+	printf("=============================================\n");
+	printf("请选择功能:\n");
+	scanf("%d", &sel);
+	switch (sel) {
+	case 1:
+		head = Insert_Node(head);
+		break;
+	case 2:
+		head = Edit_Node(head);
+		break;
+	case 3:
+		head = Delete_Node(head);
+		break;
+	case 4:
+		head = Query_Node(head);
+		break;
+	case 0:
+		break;
+	}
+	head = Rank_Link(head);
+	head = Analysis_Link(head);
+	head = Output_Link(head);
+	return head;
+}
+struct Stulink *paixu(struct Stulink *head)
+{
+	int sel;
+	printf("           二级菜单---计算排序管理\n");
+	printf("=================================================\n");
+	printf("1-计算名次并且按名次升序排序      2-按学号降序排序\n");
+	printf("3-按成绩升序排序                  0-退出上级菜单\n");
+	printf("=================================================\n");
+	printf("请选择功能:\n");
+	scanf("%d", &sel);
+	switch (sel) {
+	case 1:
+		head = Analysis_Link(head);
+		head = Rank_Link(head);
+		head = Output_Link(head);
+		break;
+	case 2:
+		head = Analysis_Link(head);
+		head = Rank_xh_down(head);
+		head = Output_Link(head);
+		break;
+	case 3:
+		head = Analysis_Link(head);
+		head = Rank_cj_up(head);
+		head = Output_Link(head);
+		break;
+	case 0:
+		break;
+	}
+	return head;
+}
+struct Stulink *shuchu(struct Stulink *head)
+{
+	int sel;
+	printf("           二级菜单---报表输出管理\n");
+	printf("=================================================\n");
+	printf("1-按学号升序输出     2-按成绩降序输出\n");
+	printf("0-退出上级菜单\n");
+	printf("=================================================\n");
+	printf("请选择功能:\n");
+	scanf("%d", &sel);
+	switch (sel) {
+	case 1:
+		head = Analysis_Link(head);
+		head = Rank_Link(head);
+		head = Sort_Link_up(head);
+		head = Output_Link(head);
+		break;
+	case 2:
+		head = Analysis_Link(head);
+		head = Rank_Link(head);
+		head = Output_Link(head);
+		break;
+	case 0:
+		break;
+	}
+	return head;
+}
+struct Stulink *ReadFromFile(FILE *fp,struct Stulink *head)
+{
+
+
+	int n=0;
+	int i;
+	if ((fp = fopen("student.dat", "rb")) == NULL) {
+		printf("打开文件出错！\n");
+		exit(0);
+	}
+	while(!feof(fp)){
+	if((p1=(struct Stulink *)malloc(size))==NULL){
+            printf("不能分配空间\n");
+            exit(0);
+        }
+	fread(p1,size,1,fp);
+	n++;
+	}
+	n--;
+	printf("正在从文件读取数据到链表，请稍等...\n");
+	printf("读取结果如下：\n");
+	fseek(fp,0L,0);
+	for(i=0;i<n;i++){
+		if((p1=(struct Stulink *)malloc(size))==NULL){
+            printf("不能分配空间\n");
+            exit(0);
+        }
+		p1->next=NULL;
+		fread(p1,size,1,fp);
+		printf("%-4d%-10s%-4d%-5s%-6d\n", p1->xh, p1->xm, p1->cj, p1->dj, p1->mc);
+		if(i==0) 
+		head=p1;
+		else p2->next=p1;
+		p2=p1;
+	}
+	if (fclose(fp)) {
+		printf("不能正常关闭文件！\n");
+		exit(0);
+	}
+	printf("读取结束，共读取了%d名学生数据\n", n);
+	printf("请按任意键继续...");
+	getchar();
+	return head;
+}
+struct Stulink *Add_many(struct Stulink *head)
+{
+	struct Stulink * head1;
+	int i=0;
+	int m;
+	printf("请输入要批量插入的学生个数:\n");
+	scanf("%d",&m);
+	printf("学号 姓名 成绩:\n");
+	 for(i=0;i<m;i++){
+		if((p1=(struct Stulink *)malloc(size))==NULL){
+            printf("不能分配空间\n");
+            exit(0);
+        }
+		p1->next=NULL;
+		scanf("%d%s%d", &p1->xh, p1->xm, &p1->cj);
+		if(i==0) head1=p1;
+		else p2->next=p1;
+		p2=p1;
+	}
+	p1->next=head;
+	head=head1;
+	printf("添加结果如下:\n");
+	head = Analysis_Link(head);
+	head = Rank_Link(head);
+	head = Output_Link(head);
+	return head;
+}
+void SaveToFile(struct Stulink *head)
+{
+	int i=0;
+	printf("正在将学生信息保存到文件，请稍后...\n");
+	head = Sort_Link_up(head);
+	if ((fp = fopen("student(保存后).txt", "w")) == NULL) {
+		printf("打开文件出错！\n");
+		exit(0);
+	}
+	p1 = head;
+	while (p1->next != NULL) {
+		fprintf(fp, "%-4d%-10s%-4d%-5s%-6d\n", p1->xh, p1->xm, p1->cj, p1->dj, p1->mc);
+		p1 = p1->next;
+		i++;
+	}
+	fprintf(fp, "%-4d%-10s%-4d%-5s%-6d\n", p1->xh, p1->xm, p1->cj, p1->dj, p1->mc);
+	i++;
+	if (fclose(fp)) {
+		printf("不能正常关闭文件！\n");
+		exit(0);
+	}
+	printf("读取结束，共保存了%d名学生数据\n",i);
+	printf("欢迎使用成绩管理系统\n");
+	printf("请按任意键退出\n");
+	getchar();
+}
+struct Stulink *Output_Link(struct Stulink *head)
+{
+	p1 = head;
+	printf("学生成绩如下：\n");
+	printf("学号 姓名      成绩 等级   名次\n");
+	while (p1->next != NULL) {
+		printf("%-4d%-10s%-4d%-5s%-6d\n", p1->xh, p1->xm, p1->cj, p1->dj, p1->mc);
+		p1 = p1->next;
+	}
+	printf("%-4d%-10s%-4d%-5s%-6d\n", p1->xh, p1->xm, p1->cj, p1->dj, p1->mc);
+	printf("请按回车键继续:\n");
+	getchar();
+	return head;
+}
+struct Stulink *Query_Node(struct Stulink *head)
+{
+	int n;
+	p1 = head;
+	printf("请输入要查找的学号：\n");
+	scanf("%d", &n);
+	printf("学号 姓名      成绩 等级   名次\n");
+	while (p1->xh != n) {
+		p1 = p1->next;
+	}
+	printf("%-4d%-10s%-4d%-5s%-6d\n", p1->xh, p1->xm, p1->cj, p1->dj, p1->mc);
+	printf("请按回车键继续:\n");
+	getchar();
+	return head;
+}
+struct Stulink *Insert_Node(struct Stulink *head)
+{
+	printf("请输入要插入的学生成绩信息\n");
+	if ((p1 = (struct Stulink *)malloc(sizeof(size))) == NULL) {
+		printf("不能成功分配储存块!\n");
+		exit(0);
+	}
+	printf("学号 姓名 成绩:\n");
+	scanf("%d%s%d", &p1->xh, p1->xm, &p1->cj);
+	p1->next = head;
+	head = p1;
+	return head;
+}
+struct Stulink *Edit_Node(struct Stulink *head)
+{
+	int num;
+	p1 = head;
+	printf("请输入要修改学生的学号:\n");
+	scanf("%d", &num);
+	while (p1->xh != num && (p1->next != NULL)) { p1 = p1->next; }
+	printf("该生原始数据：\n学号 姓名      成绩 等级   名次\n");
+	printf("%-4d%-10s%-4d%-5s%-6d\n", p1->xh, p1->xm, p1->cj, p1->dj, p1->mc);
+	printf("请输入修改后的成绩:\n");
+	scanf("%d", &p1->cj);
+	return head;
+}
+struct Stulink *Delete_Node(struct Stulink *head)
+{
+	int num;
+	p1 = head; p2 = head;
+	printf("请输入要删除的学生学号：\n");
+	scanf("%d", &num);
+	while (p1->xh != num && p1->next != NULL) {
+		p2 = p1; p1 = p1->next;
+	}
+	if (p1->xh == num) {
+		if (head == p1)head = p1->next;
+		else p2->next = p1->next;
+		free(p1);
+	}
+	else printf("无删除节点!\n");
+	return head;
+}
+struct Stulink *Analysis_Link(struct Stulink *head)
+{
+	int a = 0, b = 0, c = 0, d = 0, e = 0;
+	p1 = head;
+	while (p1->next != NULL)
+	{
+		if (p1->cj >= 90 && p1->cj <= 100)
+		{
+			strcpy(p1->dj,"A"); p1 = p1->next; a++;
+		}
+		else if (p1->cj >= 80 && p1->cj<90)
+		{
+			strcpy(p1->dj,"B"); p1 = p1->next; b++;
+		}
+		else if (p1->cj >= 70 && p1->cj<80)
+		{
+			strcpy(p1->dj,"C"); p1 = p1->next; c++;
+		}
+		else if (p1->cj >= 60 && p1->cj<70)
+		{
+			strcpy(p1->dj,"D"); p1 = p1->next; d++;
+		}
+		else if (p1->cj >= 0 && p1->cj<60)
+		{
+			strcpy(p1->dj,"E"); p1 = p1->next; e++;
+		}
+	}
+	if (p1->cj >= 90 && p1->cj <= 100)
+	{
+		strcpy(p1->dj,"A"); a++;
+	}
+	else if (p1->cj >= 80 && p1->cj < 90)
+	{
+		strcpy(p1->dj,"B"); b++;
+	}
+	else if (p1->cj >= 70 && p1->cj < 80)
+	{
+		strcpy(p1->dj,"C"); c++;
+	}
+	else if (p1->cj >= 60 && p1->cj < 70)
+	{
+		strcpy(p1->dj,"D"); d++;
+	}
+	else if (p1->cj >= 0 && p1->cj < 60)
+	{
+		strcpy(p1->dj,"E"); e++;
+	}
+	printf("等级A： %d人\n", a);
+	printf("等级B： %d人\n", b);
+	printf("等级C： %d人\n", c);
+	printf("等级D： %d人\n", d);
+	printf("等级E： %d人\n", e);
+	return head;
+}
+struct Stulink *Rank_Link(struct Stulink *head)
+{
+
+	int i, j, temp1, o = 0;
+	char temp2[20];
+	p1 = head;
+	while (p1->next != NULL) { o++; p1 = p1->next; }
+	o++;
+	p2 = head; p1 = p2->next;
+	for (i = 1; i<o; i++) {
+		if (i>1) { p2 = p2->next; p1 = p2->next; }
+		for (j = i; j<o; j++)
+		{
+			if (p1->cj>p2->cj) {
+				temp1 = p2->xh; p2->xh = p1->xh; p1->xh = temp1;
+				strcpy(temp2, p2->xm); strcpy(p2->xm, p1->xm); strcpy(p1->xm, temp2);
+				temp1 = p2->cj; p2->cj = p1->cj; p1->cj = temp1;
+				strcpy(temp2, p2->dj); strcpy(p2->dj, p1->dj); strcpy(p1->dj, temp2);
+				temp1 = p2->mc; p2->mc = p1->mc; p1->mc = temp1;
+			}
+			if (p1->next == NULL)break;
+			p1 = p1->next;
+		}
+		p2->mc = i;
+	}
+	if (i == o)p1->mc = o;
+	p2 = head; p1 = p2->next;
+	for (i = 1; i<o; i++) {
+		if(p1->cj==p2->cj){
+			p1->mc=p2->mc;
+		}
+		p2 = p2->next; p1 = p2->next;
+	}
+	return head;
+}
+struct Stulink *Sort_Link_up(struct Stulink *head)
+{
+	int i, j, temp1, m = 0;
+	char temp2[20];
+	p1 = head;
+	while (p1->next != NULL) { m++; p1 = p1->next; }
+	m++;
+	p2 = head; p1 = p2->next;
+	for (i = 1; i<m; i++) {
+		if (i>1) { p2 = p2->next; p1 = p2->next; }
+		for (j = i; j<m; j++)
+		{
+			if (p1->xh<p2->xh) {
+				temp1 = p2->xh; p2->xh = p1->xh; p1->xh = temp1;
+				strcpy(temp2, p2->xm); strcpy(p2->xm, p1->xm); strcpy(p1->xm, temp2);
+				temp1 = p2->cj; p2->cj = p1->cj; p1->cj = temp1;
+				strcpy(temp2, p2->dj); strcpy(p2->dj, p1->dj); strcpy(p1->dj, temp2);
+				temp1 = p2->mc; p2->mc = p1->mc; p1->mc = temp1;
+			}
+			if (p1->next == NULL)break;
+			p1 = p1->next;
+		}
+	}
+	return head;
+}
+struct Stulink *Rank_xh_down(struct Stulink *head)
+{
+	int i, j, temp1, o = 0;
+	char temp2[20];
+	p1 = head;
+	while (p1->next != NULL) { o++; p1 = p1->next; }
+	o++;
+	p2 = head; p1 = p2->next;
+	for (i = 1; i<o; i++) {
+		if (i>1) { p2 = p2->next; p1 = p2->next; }
+		for (j = i; j<o; j++)
+		{
+			if (p1->xh>p2->xh) {
+				strcpy(temp2, p2->xm); strcpy(p2->xm, p1->xm); strcpy(p1->xm, temp2);
+				temp1 = p2->cj; p2->cj = p1->cj; p1->cj = temp1;
+				strcpy(temp2, p2->dj); strcpy(p2->dj, p1->dj); strcpy(p1->dj, temp2);
+				temp1 = p2->mc; p2->mc = p1->mc; p1->mc = temp1;
+				temp1 = p2->xh; p2->xh = p1->xh; p1->xh = temp1;
+			}
+			if (p1->next == NULL)break;
+			p1 = p1->next;
+		}
+	}
+	return head;
+}
+struct Stulink *Rank_cj_up(struct Stulink *head)
+{
+	int i, j, temp1, o = 0;
+	char temp2[20];
+	p1 = head;
+	while (p1->next != NULL) { o++; p1 = p1->next; }
+	o++;
+	p2 = head; p1 = p2->next;
+	for (i = 1; i<o; i++) {
+		if (i>1) { p2 = p2->next; p1 = p2->next; }
+		for (j = i; j<o; j++)
+		{
+			if (p1->cj<p2->cj) {
+				strcpy(temp2, p2->xm); strcpy(p2->xm, p1->xm); strcpy(p1->xm, temp2);
+				temp1 = p2->cj; p2->cj = p1->cj; p1->cj = temp1;
+				strcpy(temp2, p2->dj); strcpy(p2->dj, p1->dj); strcpy(p1->dj, temp2);
+				temp1 = p2->mc; p2->mc = p1->mc; p1->mc = temp1;
+				temp1 = p2->xh; p2->xh = p1->xh; p1->xh = temp1;
+			}
+			if (p1->next == NULL)break;
+			p1 = p1->next;
+		}
+	}
+	return head;
+}
